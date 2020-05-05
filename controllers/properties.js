@@ -4,7 +4,10 @@ const Op = db.Sequelize.Op;
 
 // Create and Save a new Properties
 exports.create = (req, res) => {
+  // validate request
+  if (!req.body.) {
 
+  }
 };
 
 // Retrieve all Properties from the database

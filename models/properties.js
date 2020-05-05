@@ -1,10 +1,10 @@
 module.exports = (sequelize, Sequelize) => {
   const Property = sequelize.define("property", {
-    name: {
-      unitNumber: Sequelize.STRING
+    unitNumber: {
+      type:Sequelize.NUMBER
     },
     houseNumber: {
-      type: Sequelize.STRING
+      type: Sequelize.NUMBER
     },
     street: {
       type: Sequelize.STRING
