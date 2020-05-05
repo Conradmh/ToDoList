@@ -7,6 +7,14 @@ const app = express();
 const corsOptions = {
   origin: "http://localhost:8081"
 };
+// db connect
+const db = require('./app/models');
+db.sequelize.sync();
+
+// drop db
+// db.sequelize.sync({ force: true }).then(() => {
+//   console.log("Drop and re-sync db.");
+// });
 
 app.use(cors(corsOptions));
 
