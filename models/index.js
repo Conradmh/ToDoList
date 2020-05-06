@@ -16,3 +16,10 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
 
 
 const db = {};
+
+db.Sequelize = Sequelize;
+db.sequelize = sequelize;
+
+db.properties = require("./property.model.js")(sequelize, Sequelize);
+
+module.exports = db;

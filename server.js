@@ -8,7 +8,7 @@ const corsOptions = {
   origin: "http://localhost:8081"
 };
 // db connect
-const db = require('./app/models');
+const db = require('./models');
 db.sequelize.sync();
 
 // drop db
@@ -29,6 +29,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.get('/', (req, res) => {
     res.json({message: "Login / Splash Page"})
 });
+
+
+require("./routes/properties.routes")(app);
 
 // set port, listen for requests
 app.listen(PORT, () => console.log(`Server is running on port: ${PORT}`));
