@@ -5,4 +5,6 @@ module.exports = app => {
 
   // Create a new Tutorial
   router.post("/", tutorials.create);
+
+  app.use('/api/properties', router);
 }
