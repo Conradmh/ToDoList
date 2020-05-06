@@ -1,10 +1,28 @@
 module.exports = app => {
-  const tutorials = require("../controllers/properties.js");
+  const property = require("../controllers/properties.js");
 
   var router = require("express").Router();
 
-  // Create a new Tutorial
-  router.post("/", tutorials.create);
+  // Create a new Property
+  router.post("/", property.create);
+
+  // Retrieve all Properties
+  router.get("/", property.findAll);
+
+  // Retrieve all published Properties
+  router.get("/active", property.findAllActive);
+
+  // Retrieve a single Property with id
+  router.get("/:id", property.findOne);
+
+  // Update a Property with id
+  router.put("/:id", property.update);
+
+  // Delete a Property with id
+  router.delete("/:id", property.delete);
+
+  // Create a new Property
+  router.delete("/", property.deleteAll);
 
   app.use('/api/properties', router);
 }

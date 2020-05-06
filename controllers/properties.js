@@ -132,8 +132,8 @@ exports.deleteAll = (req, res) => {
 };
 
 // Find all Properties by boolean
-
-// exports.findAllPublished = (req, res) => {
+// 
+// exports.findAllActive = (req, res) => {
 //   Property.findAll({ where: { active: true } })
 //     .then(data => {
 //       res.send(data);
