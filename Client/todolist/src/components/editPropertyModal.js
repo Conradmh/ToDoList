@@ -70,6 +70,14 @@ class EditPropertyModal extends Component {
               this.props.toggleModal();
             }}
           >Update</Button>
+          <Button
+            className="ui red basic button"
+            onClick={async () => {
+              await this.props.delete(this.props.property.id)
+              await this.props.refresh();
+              this.props.toggleModal();
+            }}
+          >Delete</Button>
         </Form> : null}
       </Modal>
     );

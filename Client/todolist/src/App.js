@@ -78,6 +78,17 @@ class ToDoList extends Component {
       console.error(err)
     }
   }
+  deleteProperty = async (propertyId) => {
+    console.log(propertyId)
+
+    const deletePropertyResponse = await fetch('http://localhost:8040/api/properties/' + propertyId, {
+        method: 'DELETE',
+        credentials: 'include'
+    });
+    const deletePropertyParsed = await deletePropertyResponse.json();
+    console.log(deletePropertyParsed);
+    this.refreshProperties()
+  }
   toggleCreatePropertyModal = async () => {
     await this.setState({
       modalOpen: !this.state.modalOpen
@@ -128,6 +139,7 @@ class ToDoList extends Component {
           render={this.state.render}
           update={this.updateProperty}
           refresh={this.refreshProperties}
+          delete={this.deleteProperty}
       />
       </React.Fragment>
     );
