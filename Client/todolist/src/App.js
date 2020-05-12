@@ -121,15 +121,20 @@ class ToDoList extends Component {
         </Grid.Row>
         <Grid.Row>
           <Grid.Column width={3}> 1 </Grid.Column>
-          <Property
-            properties={this.state.properties}
-            toggleModal={this.toggleCreatePropertyModal}
-            setCurrentPropertyIndex={this.setCurrentPropertyIndex}
-            toggleRender={this.toggleRender}
-          />
-          <PropertyForm
-            create={this.createProperty}
-          />
+          <Grid.Column width={8}>
+            <Property
+              properties={this.state.properties}
+              toggleModal={this.toggleCreatePropertyModal}
+              setCurrentPropertyIndex={this.setCurrentPropertyIndex}
+              toggleRender={this.toggleRender}
+            />
+          </Grid.Column>
+          <Grid.Column width={5}>
+            <PropertyForm
+              create={this.createProperty}
+            />
+          </Grid.Column>
+
         </Grid.Row>
       </Grid>
       <EditPropertyModal

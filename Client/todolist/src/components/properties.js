@@ -31,7 +31,7 @@ class Property extends Component {
    })
    return (
       <React.Fragment>
-            <Card.Group stackable>
+            <Card.Group stackable itemsPerRow={2}>
               {properties}
             </Card.Group>
       </React.Fragment>
