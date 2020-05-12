@@ -25,23 +25,6 @@ class EditPropertyModal extends Component {
       return ""
     }
   };
-  update = async () => {
-    if (this.state.name === "") {
-      await this.setState({
-        name: this.props.property.name
-      });
-    } else if (this.state.street === "") {
-        await this.setState({
-          street: this.props.property.street
-        });
-    } else if (this.state.houseNumber === null) {
-      await this.setState({
-        houseNumber: this.props.property.houseNumber
-      });
-    } else {
-       return null
-    }
-  }
   render(){
 
     const state = this.state
@@ -56,35 +39,35 @@ class EditPropertyModal extends Component {
             fluid
             name="name"
             label='Property Name'
-            value={this.props.property.name}
+            placeholder={this.props.property.name}
             onChange={this.handleChange}
           />
           <Form.Input
             fluid
             name="houseNumber"
             label='House Number'
-            value={this.props.property.houseNumber}
+            placeholder={this.props.property.houseNumber}
             onChange={this.handleChange}
           />
           <Form.Input
             fluid
             name="street"
             label='Street Name'
-            value={this.props.property.street}
+            placeholder={this.props.property.street}
             onChange={this.handleChange}
           />
           <Form.Input
             fluid
             name="unitNumber"
             label='Unit Number'
-            value={this.showUnitNumber()}
             onChange={this.handleChange}
           />
           <Button
             type='submit'
             onClick={async () => {
-              await this.update()
               await this.props.update(this.props.property.id, state)
+              await this.props.refresh();
+              this.props.toggleModal();
             }}
           >Update</Button>
         </Form> : null}

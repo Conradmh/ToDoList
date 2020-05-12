@@ -96,6 +96,9 @@ class ToDoList extends Component {
       render: !this.state.render
     })
   };
+  refreshProperties = () => {
+    this.getProperties();
+  };
   render(){
     return (
       <React.Fragment>
@@ -124,6 +127,7 @@ class ToDoList extends Component {
           toggleModal={this.toggleCreatePropertyModal}
           render={this.state.render}
           update={this.updateProperty}
+          refresh={this.refreshProperties}
       />
       </React.Fragment>
     );
