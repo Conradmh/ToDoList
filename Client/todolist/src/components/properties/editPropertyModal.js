@@ -1,22 +1,9 @@
 import React, { Component } from 'react';
-import { Modal, Form, Button } from 'semantic-ui-react'
+import { Form, Button } from 'semantic-ui-react'
 
 class EditPropertyModal extends Component {
   constructor(props){
     super(props);
-    this.state = {
-      name: "",
-      unitNumber: null,
-      houseNumber: null,
-      street: ""
-
-    }
-  };
-  handleChange = async (e) => {
-    await this.setState(
-      {[e.currentTarget.name]: e.currentTarget.value}
-    )
-    console.log(this.state);
   };
   showUnitNumber = () => {
     if (this.props.property.unitNumber) {
@@ -27,32 +14,24 @@ class EditPropertyModal extends Component {
   };
   render(){
 
-    const state = this.state
     return (
-      <Modal
-          open={this.props.open}
-          closeIcon
-          onClose={this.props.toggleModal}
-      >
-        {this.props.render ? <Form>
+      <React.Fragment>
+        {<Form>
           <Form.Input
             fluid
             name="name"
-            label='Property Name'
             placeholder={this.props.property.name}
             onChange={this.handleChange}
           />
           <Form.Input
             fluid
             name="houseNumber"
-            label='House Number'
             placeholder={this.props.property.houseNumber}
             onChange={this.handleChange}
           />
           <Form.Input
             fluid
             name="street"
-            label='Street Name'
             placeholder={this.props.property.street}
             onChange={this.handleChange}
           />
@@ -65,21 +44,18 @@ class EditPropertyModal extends Component {
           <Button
             type='submit'
             onClick={async () => {
-              await this.props.update(this.props.property.id, state)
-              await this.props.refresh();
-              this.props.toggleModal();
+              await update(this.props.property.id, state)
             }}
           >Update</Button>
           <Button
             className="ui red basic button"
             onClick={async () => {
-              await this.props.delete(this.props.property.id)
-              await this.props.refresh();
-              this.props.toggleModal();
+              await delete(this.props.property.id)
+
             }}
           >Delete</Button>
-        </Form> : null}
-      </Modal>
+        </Form>}
+      </React.Fragment>
     );
   }
 }

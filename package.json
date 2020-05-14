@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Conradmh/ToDoList/issues"
   },
-  "homepage": "https://github.com/Conradmh/ToDoList#readme"
+  "homepage": "https://github.com/Conradmh/ToDoList#readme",
+  "dependencies": {
+    "react-router-dom": "^5.2.0"
+  }
 }
