@@ -9,21 +9,21 @@ class List extends Component {
 
   render(props){
 
-    
-    const properties = this.props.properties.map((propt, idx) => {
+    console.log(this.props, 'in list');
+    const requests = this.props.requests.map((reqs, idx) => {
       return (
         <li>
-        <Link to={`/properties/${idx}`}>{propt.name}</Link>
+        <Link to={`/${idx}`}>{reqs.title}</Link>
         </li>
       )
     });
     return (
       <React.Fragment>
 
-        <h1> Properties List </h1>
+        <h1> Service Requests List </h1>
 
         <ul>
-            { properties }
+            { requests }
 
         </ul>
 

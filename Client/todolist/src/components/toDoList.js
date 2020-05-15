@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import ServiceRequests from "./serviceRequests/index.js"
+import ShowReq from './serviceRequests/show.js'
+import NewReq from './serviceRequests/newServiceRequest.js'
+import EditReq from './serviceRequests/editServiceRequest.js'
 import Properties from "./properties/index.js"
-import Show from './properties/show.js'
-import Edit from './properties/routeEdit.js'
-import New from './properties/routeNew.js'
+import ShowProp from './properties/show.js'
+import EditProp from './properties/routeEdit.js'
+import NewProp from './properties/routeNew.js'
 import {
   BrowserRouter as Router,
   Switch,
@@ -14,28 +17,6 @@ import 'semantic-ui-css/semantic.min.css'
 
 
 class ToDoList extends Component {
-  constructor(){
-    super();
-    this.state = {
-      serviceReqs: [
-        {
-          id: 0,
-          title: "blocked drain",
-          theme: "plumbing"
-        },
-        {
-          id: 1,
-          title: "broken washing machine",
-          theme: "appliance"
-        },
-        {
-          id: 2,
-          title: "need new locks",
-          theme: "security"
-        }
-      ]
-    }
-  }
 
   render(){
     return (
@@ -56,19 +37,28 @@ class ToDoList extends Component {
 
       <Switch>
         <Route exact path="/">
-          <ServiceRequests reqs={this.state.serviceReqs}/>
+          <ServiceRequests />
+        </Route>
+        <Route path="/new">
+          <NewReq />
+        </Route>
+        <Route path="/edit">
+          <EditReq />
+        </Route>
+        <Route path='/0'>
+          <ShowReq />
         </Route>
         <Route exact path="/properties">
           <Properties />
         </Route>
         <Route path="/properties/new">
-          <New />
+          <NewProp />
         </Route>
         <Route path="/properties/edit">
-          <Edit />
+          <EditProp />
         </Route>
         <Route path='/properties/0'>
-          <Show />
+          <ShowProp />
         </Route>
       </Switch>
     </div>

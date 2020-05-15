@@ -34,6 +34,8 @@ app.get('/', (req, res) => {
 
 
 require("./routes/properties.routes")(app);
+require("./routes/serviceRequests.routes")(app);
+
 
 
 // set port, listen for requests

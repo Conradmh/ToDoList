@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import List from './list.js'
 import {
   BrowserRouter as
+  Route,
   Link
 } from "react-router-dom";
-import { getProperties } from '../../services.js'
+import { getProperties } from '../../properties.services.js'
 
 class Property extends Component {
  constructor(props){
@@ -14,6 +15,8 @@ class Property extends Component {
        {
          id: 0,
          name: "Kitty",
+         houseNumber: 1223,
+         street: "PeowPeowMeowMeow Ln"
        }
      ]
    };
@@ -36,19 +39,21 @@ class Property extends Component {
 
    return (
       <React.Fragment>
-      <h1> Properties Index </h1>
+      
+        <h1> Properties Index </h1>
 
-      <ul>
-        <li>
-          <Link to={`/properties/new`}>New Property</Link>
-        </li>
-        <li>
-          <Link to={`/properties/edit`}>Edit Property</Link>
-        </li>
+        <ul>
+          <li>
+            <Link to="/properties/new">New Property</Link>
+          </li>
+          <li>
+            <Link to='/properties/edit'>Edit Property</Link>
+            </li>
 
-      </ul>
-      <hr />
-      <List properties={this.state.properties}/>
+        </ul>
+        <hr />
+        <List properties={this.state.properties}/>
+
 
       </React.Fragment>
    );

@@ -1,128 +1,125 @@
 const db = require('../models/index.js');
-
-const Property = db.properties;
+const Request = db.serviceRequests;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new Properties
+// Create and Save a new Service Requests
 exports.create = (req, res) => {
     // Validate request
-    if (!req.body.street || !req.body.name || !req.body.houseNumber) {
+    if (!req.body.title || !req.body.description ) {
       res.status(400).send({
         message: "Content can not be empty!"
       });
       return;
     }
 
-    // Create a Tutorial
-    const property = {
-      name: req.body.name,
-      houseNumber: req.body.houseNumber,
-      unitNumber: req.body.unitNumber,
-      street: req.body.street
+    // Create a Request
+    const request = {
+      title: req.body.title,
+      description: req.body.description
     };
 
-    // Save Tutorial in the database
-    Property.create(property)
+    // Save Request in the database
+    Request.create(request)
       .then(data => {
         res.send(data);
       })
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while creating the Property."
+            err.message || "Some error occurred while creating the Request."
         });
       });
 };
 
-// Retrieve all Properties from the database/find by condition
+// Retrieve all Service Requests from the database/find by condition
 exports.findAll = (req, res) => {
-  const houseNumber = req.query.houseNumber;
-  let condition = houseNumber ? { houseNumber: { [Op.like]: `%${houseNumber}%` } } : null;
-  Property.findAll({ where: condition })
+  const title = req.query.title;
+  let condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+  Request.findAll({ where: condition })
   .then(data => {
     res.send(data);
   })
   .catch(err => {
     res.status(500).send({
       message:
-        err.message || "An error occured while retrieving the Property"
+        err.message || "An error occured while retrieving the Request"
     });
   });
 };
 
-// Find a single Property  with an id
+// Find a single Request  with an id
 exports.findOne = (req, res) => {
  const id = req.params.id;
 
- Property.findByPk(id)
+ Request.findByPk(id)
   .then(data => {
     res.send(data);
   })
   .catch(err => {
     res.status(500).send({
-      message: "Error retrieving Property with id:" + id
+      message: "Error retrieving Request with id:" + id
     });
   });
 };
 
-// Update a Property by the id in teh request
+// Update a Request by the id in teh request
 exports.update = (req, res) => {
   const id = req.params.id;
 
-    Property.update(req.body, {
+    Request.update(req.body, {
       where: { id: id }
     })
       .then(num => {
         if (num == 1) {
           res.send({
-            message: "Property was updated successfully."
+            message: "Request was updated successfully."
           });
         } else {
           res.send({
-            message: `Cannot update Property with id=${id}. Maybe Property was not found or req.body is empty!`
+            message: `Cannot update Request with id=${id}. Maybe Request was not found or req.body is empty!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error updating Property with id=" + id
+          message: "Error updating Request with id=" + id
         });
       });
 };
 
-// Delete a Property with the specified id in the request
+// Delete a Request with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  Property.destroy({
+  Request.destroy({
     where: { id: id }
   })
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Property was deleted successfully!"
+          message: "Request was deleted successfully!"
         });
       } else {
         res.send({
-          message: `Cannot delete Property with id=${id}. Maybe Property was not found!`
+          message: `Cannot delete Request with id=${id}. Maybe Request was not found!`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Could not delete Property with id=" + id
+        message: "Could not delete Request with id=" + id
       });
     });
 };
 
-// Delete all propterties from the database
+// Delete all Service Requests from the database
 exports.deleteAll = (req, res) => {
-  Property.destroy({
+  Request.destroy({
     where: {},
     truncate: false
   })
     .then(nums => {
-      res.send({ message: `${nums} Propertys were deleted successfully!` });
+      res.send({ message: `${nums} Requests were deleted successfully!` });
     })
     .catch(err => {
       res.status(500).send({
@@ -132,10 +129,10 @@ exports.deleteAll = (req, res) => {
     });
 };
 
-// Find all Properties by boolean
+// Find all Service Requests by boolean
 //
 // exports.findAllActive = (req, res) => {
-//   Property.findAll({ where: { active: true } })
+//   Request.findAll({ where: { active: true } })
 //     .then(data => {
 //       res.send(data);
 //     })

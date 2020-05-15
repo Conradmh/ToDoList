@@ -21,5 +21,6 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.properties = require("./property.model.js")(sequelize, Sequelize);
+db.serviceRequests = require("./serviceRequests.model.js")(sequelize, Sequelize);
 
 module.exports = db;
