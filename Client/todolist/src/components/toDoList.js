@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import ServiceRequests from "./serviceRequests/index.js"
-import ShowReq from './serviceRequests/show.js'
+import List from "./serviceRequests/listRequests.js"
+import ShowReq from './serviceRequests/showRequest.js'
 import NewReq from './serviceRequests/newServiceRequest.js'
 import EditReq from './serviceRequests/editServiceRequest.js'
-import Properties from "./properties/index.js"
-import ShowProp from './properties/show.js'
-import EditProp from './properties/routeEdit.js'
-import NewProp from './properties/routeNew.js'
+import Properties from "./properties/listProperties.js"
+import ShowProp from './properties/showProperty.js'
+import EditProp from './properties/editProperty.js'
+import NewProp from './properties/newProperty.js'
 import {
   BrowserRouter as Router,
   Switch,
@@ -37,15 +37,15 @@ class ToDoList extends Component {
 
       <Switch>
         <Route exact path="/">
-          <ServiceRequests />
+          <List />
         </Route>
         <Route path="/new">
           <NewReq />
         </Route>
-        <Route path="/edit">
+        <Route path="/edit/:id">
           <EditReq />
         </Route>
-        <Route path='/0'>
+        <Route path='/:id'>
           <ShowReq />
         </Route>
         <Route exact path="/properties">
@@ -57,7 +57,7 @@ class ToDoList extends Component {
         <Route path="/properties/edit">
           <EditProp />
         </Route>
-        <Route path='/properties/0'>
+        <Route path='/properties/:id'>
           <ShowProp />
         </Route>
       </Switch>

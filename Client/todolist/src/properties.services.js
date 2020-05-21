@@ -15,7 +15,17 @@ const getProperties = async () => {
 };
 export { getProperties };
 
+export const getPropertyByPk = async (id) => {
+  try {
+    const foundProperty = await fetch(`http://localhost:8040/api/properties/${id}`)
 
+    const parsedResponse = await foundProperty.json();
+    console.log(parsedResponse, 'this is parsedResponse in findByID');
+    return parsedResponse
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 const createProperty = async (e, propertyFromForm) => {
   console.log(propertyFromForm);
@@ -33,7 +43,7 @@ const createProperty = async (e, propertyFromForm) => {
     const parsedResponse = await createdPropertyResponse.json();
 
     this.setState({properties: [...this.state.properties, parsedResponse]})
-    console.log(parsedResponse, 'this is the New Monster');
+    console.log(parsedResponse, 'this is the New Property');
 
 
   } catch(err){

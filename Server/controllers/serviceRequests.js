@@ -53,6 +53,7 @@ exports.findOne = (req, res) => {
 
  Request.findByPk(id)
   .then(data => {
+    console.log(data, 'dataer')
     res.send(data);
   })
   .catch(err => {

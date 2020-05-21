@@ -1,60 +1,49 @@
 import React, { Component } from 'react';
-import { Form, Button, Grid } from 'semantic-ui-react';
+import { withRouter } from 'react-router';
+import { createProperty } from '../../properties.services';
+import { Form, Button} from 'semantic-ui-react';
 
-
-class PropertyForm extends Component {
-  constructor(props){
-    super(props);
-      this.state = {
-        name: "",
-        unitNumber: null,
-        houseNumber: null,
-        street: ""
-      }
+class New extends Component {
+  constructor(){
+    super();
+    this.state = {};
   };
-  handleChange = async (e) => {
-    await this.setState(
-      {[e.currentTarget.name]: e.currentTarget.value}
+  handleChange = (e) => {
+    this.setState(
+      {[e.target.name]: e.currentTarget.value}
     )
     console.log(this.state);
   };
   render(){
     return (
-      <Grid.Column width={5}>
+      <React.Fragment>
+        <h1> New Property Page </h1>
         <Form>
           <Form.Input
             fluid
+            label='Name'
             name="name"
-            label='Property Name'
+            placeholder='Name'
             onChange={this.handleChange}
           />
           <Form.Input
             fluid
-            name="houseNumber"
-            label='House Number'
-            onChange={this.handleChange}
-          />
-          <Form.Input
-            fluid
+            label='Street'
             name="street"
-            label='Street Name'
-            onChange={this.handleChange}
-          />
-          <Form.Input
-            fluid
-            name="unitNumber"
-            label='Unit Number'
+            placeholder='Street'
             onChange={this.handleChange}
           />
           <Button
             type='submit'
-            onClick={(e) => {
-              this.props.create(e, this.state)
+            onClick={() => {
+              createProperty(this.state)
+              this.props.history.push('/');
             }}
           >Save</Button>
         </Form>
-      </Grid.Column>
+      </React.Fragment>
+
     );
-  }
+    }
 }
-export default PropertyForm;
+export default withRouter(New);

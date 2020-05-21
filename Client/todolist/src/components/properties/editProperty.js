@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import { getServiceRequestByPk, updateRequest, deleteRequest } from '../../serviceRequests.services';
+import { getPropertyByPk, updateProperty, deleteProperty } from '../../properties.services';
 import { Form, Button} from 'semantic-ui-react';
 
 class Edit extends Component {
@@ -12,32 +12,32 @@ class Edit extends Component {
     this.findById()
   };
   findById = async () => {
-    const serviceRequest = await getServiceRequestByPk(this.props.match.params.id);
-    this.setState({serviceRequest});
+    const property = await getPropertyByPk(this.props.match.params.id);
+    this.setState({property});
   };
-  updateRequest = async () => {
-    const serviceReq = this.state.serviceRequest;
+  updateProperty = async () => {
+    const serviceReq = this.state.property;
 
-    await updateRequest(serviceReq);
+    await updateProperty(serviceReq);
     console.log(serviceReq, 'serviceReq');
   };
-  handleTitleChange = (e) => {
+  handleNameChange = (e) => {
     e.persist();
     this.setState(prevState => ({
-      serviceRequest: {
-        ...prevState.serviceRequest, title: e.target.value}}
+      property: {
+        ...prevState.property, name: e.target.value}}
     ));
     console.log(this.state)
   };
-  handleDescriptionChange = (e) => {
+  handleStreetChange = (e) => {
     e.persist();
     this.setState(prevState => ({
-      serviceRequest: {
-        ...prevState.serviceRequest, description: e.target.value}}
+      property: {
+        ...prevState.property, street: e.target.value}}
     ));
     console.log(this.state)
   };
-  renderEditServiceRequestForm = () => {
+  renderEditPropertyForm = () => {
     if(!this.isLoaded()) return null;
 
     return (
@@ -45,28 +45,28 @@ class Edit extends Component {
       <Form>
         <Form.Input
         fluid
-        label='Title'
-        placeholder={this.state.serviceRequest.title}
-        onChange={this.handleTitleChange}
+        label='Property'
+        placeholder={this.state.property.name}
+        onChange={this.handlePropertyChange}
         />
         <Form.Input
         fluid
         label='Description'
         name="description"
-        placeholder={this.state.serviceRequest.description}
+        placeholder={this.state.property.description}
         onChange={this.handleDescriptionChange}
         />
         <Button
         type='submit'
         onClick={() => {
-          this.updateRequest(this.state.serviceRequest)
+          this.updateProperty(this.state.property)
           this.props.history.push('/');
         }}
         >Update</Button>
         <Button
         type='submit'
         onClick={() => {
-          deleteRequest(this.state.serviceRequest.id)
+          deleteProperty(this.state.property.id)
           this.props.history.push('/');
         }}
         >Delete</Button>
@@ -80,15 +80,15 @@ class Edit extends Component {
     return <div>Loading...</div>;
   };
   isLoaded = () => {
-      if(this.state.serviceRequest) return true;
+      if(this.state.property) return true;
       return false;
   };
   render(){
 
     return (
       <>
-        <h1> Edit Service Request Page </h1>
-        { this.renderEditServiceRequestForm() }
+        <h1> Edit Service Property Page </h1>
+        { this.renderEditPropertyForm() }
         { this.renderLoading() }
       </>
     );

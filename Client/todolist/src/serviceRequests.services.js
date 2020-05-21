@@ -15,9 +15,20 @@ const getRequests = async () => {
 };
 export { getRequests };
 
+export const getServiceRequestByPk = async (id) => {
+  try {
+    const foundServiceRequest = await fetch(`http://localhost:8040/api/servicerequests/${id}`)
+
+    const parsedResponse = await foundServiceRequest.json();
+    console.log(parsedResponse, 'this is parsedResponse in findByID');
+    return parsedResponse
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 
-const createRequest = async (e, requestFromForm) => {
+const createRequest = async (requestFromForm) => {
   console.log(requestFromForm);
   try {
 
@@ -32,7 +43,6 @@ const createRequest = async (e, requestFromForm) => {
 
     const parsedResponse = await createdRequestResponse.json();
 
-    this.setState({serviceRequests: [...this.state.serviceRequests, parsedResponse]})
     console.log(parsedResponse, 'this is the New Service Request');
 
 
@@ -45,14 +55,14 @@ export { createRequest };
 
 
 
-const updateRequest = async (requestId, state) => {
+const updateRequest = async (serviceRequest) => {
   try {
 
-    const url = 'http://localhost:8040/api/servicerequests/' + requestId;
+    const url = 'http://localhost:8040/api/servicerequests/' + serviceRequest.id;
 
     const serverResponse = await fetch(url, {
       method: 'PUT',
-      body: JSON.stringify(state),
+      body: JSON.stringify(serviceRequest),
       headers: {
         'Content-Type': 'application/json'
       }
