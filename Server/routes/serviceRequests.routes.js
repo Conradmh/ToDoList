@@ -7,10 +7,10 @@ module.exports = app => {
   router.post("/", serviceRequests.create);
 
   // Retrieve all serviceRequests
-  router.get("/", serviceRequests.findAll);
+  router.get("/all", serviceRequests.findAll);
 
   // Retrieve all active serviceRequests
-  // router.get("/active", serviceRequests.findAllActive);
+  router.get("/", serviceRequests.findAllActive);
 
   // Retrieve a single serviceRequests with id
   router.get("/:id", serviceRequests.findOne);

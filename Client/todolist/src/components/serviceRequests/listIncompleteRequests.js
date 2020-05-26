@@ -6,9 +6,9 @@ import {
   Link
 } from "react-router-dom";
 import { withRouter } from 'react-router'
-import { getAllRequests } from '../../serviceRequests.services';
+import { getActiveRequests } from '../../serviceRequests.services';
 
-class List extends Component {
+class ActiveList extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -16,16 +16,28 @@ class List extends Component {
     }
   }
   componentDidMount(){
-    this.getAllRequests();
+    this.getActiveRequests();
   };
-  getAllRequests = async () => {
-    const serviceRequests = await getAllRequests();
+  getActiveRequests = async () => {
+    const serviceRequests = await getActiveRequests();
     console.log(serviceRequests);
     this.setState({serviceRequests});
   };
-  renderServiceRequest = () => {
+  sortRequestsByDate = (arr) => {
+    return  (
+      arr.sort((a, b) => b.date - a.date)
+    )
+  };
+  sortRequestsAlphabetically = (arr) => {
+    return  (
+      arr.sort((a, b) => b.title - a.title)
+    )
+  };
+  renderServiceRequest =  () => {
     if(!this.isLoaded()) return null;
-    const requests = this.state.serviceRequests.map((reqs) => {
+    const sortedRequests = this.sortRequestsByDate(this.state.serviceRequests)
+    console.log(sortedRequests, 'this is sorted');
+    const requests = sortedRequests.map((reqs) => {
       return (
         <li>
         <Link to={`/service-request/${reqs.id}`}>{reqs.title}</Link>
@@ -55,7 +67,7 @@ class List extends Component {
     return (
       <React.Fragment>
 
-        <h1> Service Requests List               <Button onClick={() => this.goToNew()}>New Property</Button>
+        <h1> Active Service Reqeuests     <Button onClick={() => this.goToNew()}>New Request</Button>
 </h1>
 
         <ul>
@@ -69,4 +81,4 @@ class List extends Component {
     );
   }
 }
-export default withRouter(List);
+export default withRouter(ActiveList);

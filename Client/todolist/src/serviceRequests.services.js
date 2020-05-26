@@ -1,7 +1,7 @@
-const getRequests = async () => {
+const getAllRequests = async () => {
   try {
     const serviceRequests = await
-    fetch("http://localhost:8040/api/servicerequests")
+    fetch("http://localhost:8040/api/servicerequests/all")
 
     const responseRequests = await serviceRequests.json();
 
@@ -13,7 +13,24 @@ const getRequests = async () => {
       console.log(err);
   }
 };
-export { getRequests };
+export { getAllRequests };
+
+const getActiveRequests = async () => {
+  try {
+    const activeServiceRequests = await
+    fetch("http://localhost:8040/api/servicerequests")
+
+    const responseRequests = await activeServiceRequests.json();
+
+      // this.setState({
+      // serviceRequests: responseRequests
+      // });
+      return responseRequests
+  } catch (err) {
+      console.log(err);
+  }
+};
+export { getActiveRequests };
 
 export const getServiceRequestByPk = async (id) => {
   try {

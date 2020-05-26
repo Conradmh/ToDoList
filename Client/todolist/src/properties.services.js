@@ -27,7 +27,7 @@ export const getPropertyByPk = async (id) => {
   }
 };
 
-const createProperty = async (e, propertyFromForm) => {
+const createProperty = async (propertyFromForm) => {
   console.log(propertyFromForm);
   try {
 
@@ -90,6 +90,5 @@ const deleteProperty = async (propertyId) => {
   });
   const deletePropertyParsed = await deletePropertyResponse.json();
   console.log(deletePropertyParsed);
-  this.refreshProperties()
 };
 export { deleteProperty }

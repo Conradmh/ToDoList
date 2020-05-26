@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Button } from 'semantic-ui-react'
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom'
 import { getPropertyByPk } from '../../properties.services';
@@ -17,7 +18,10 @@ class Show extends Component {
     const property = await getPropertyByPk(this.props.match.params.id);
     this.setState({property});
   };
-  renderServiceProperty = () => {
+  goToEdit = () => {
+    this.props.history.push(`/properties/edit/${this.state.property.id}`)
+  };
+  renderProperty = () => {
     if(!this.isLoaded()) return null;
 
     return (
@@ -31,8 +35,12 @@ class Show extends Component {
             {JSON.stringify(this.state.property.street)}
           </li>
           <li>
-          <Link to={`/edit/${this.state.property.id}`}>edit</Link>
+            {JSON.stringify(this.state.property.houseNumber)}
           </li>
+          <li>
+            {JSON.stringify(this.state.property.unitNumber)}
+          </li>
+
         </ul>
       </>
     )
@@ -49,7 +57,9 @@ class Show extends Component {
   render(){
     return (
       <React.Fragment>
-        <h1> Property Info </h1>
+        <h1>
+          Property Info  <Button onClick={() => this.goToEdit()}>edit</Button>
+        </h1>
         {this.renderProperty()}
         {this.renderLoading()}
       </React.Fragment>

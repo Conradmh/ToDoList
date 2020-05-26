@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Button } from 'semantic-ui-react'
 import {
   BrowserRouter as
   Route,
@@ -22,12 +23,15 @@ class List extends Component {
     console.log(properties);
     this.setState({properties});
   };
+  goToNew = () => {
+    this.props.history.push(`/properties/new`)
+  };
   renderProperty = () => {
     if(!this.isLoaded()) return null;
     const properties = this.state.properties.map((units) => {
       return (
         <li>
-        <Link to={`/properties/${units.id}`}>{units.name}</Link> | <Link to={`/properties/edit/${units.id}`}>edit</Link>
+        <Link to={`/properties/${units.id}`}>{units.name}</Link>
         </li>
       )
     });
@@ -38,7 +42,7 @@ class List extends Component {
       </>
     )
 
-  }
+  };
   renderLoading = () => {
     if(this.isLoaded()) return null;
     return <div>Loading...</div>;
@@ -51,14 +55,14 @@ class List extends Component {
     return (
       <React.Fragment>
 
-        <h1> Properties List </h1>
+        <h1>
+          Properties List <Button onClick={() => this.goToNew()}>New Property</Button>
+
+        </h1>
 
         <ul>
-            { this.renderProperty() }
-            { this.renderLoading() }
-            <li>
-              <Link to="/properties/new">New Property</Link>
-            </li>
+          { this.renderLoading() }
+          { this.renderProperty() }
         </ul>
 
 

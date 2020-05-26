@@ -4,14 +4,17 @@ import { getPropertyByPk, updateProperty, deleteProperty } from '../../propertie
 import { Form, Button} from 'semantic-ui-react';
 
 class Edit extends Component {
-  constructor(props) {
+  constructor(props){
     super(props);
-    this.state = {};
-  };
+    this.state = {
+      property: {}
+    }
+  }
   componentDidMount(){
-    this.findById()
+    this.findById();
   };
   findById = async () => {
+
     const property = await getPropertyByPk(this.props.match.params.id);
     this.setState({property});
   };
@@ -37,6 +40,22 @@ class Edit extends Component {
     ));
     console.log(this.state)
   };
+  handleHouseNumberChange = (e) => {
+    e.persist();
+    this.setState(prevState => ({
+      property: {
+        ...prevState.property, houseNumber: e.target.value}}
+    ));
+    console.log(this.state)
+  };
+  handleUnitNumberChange = (e) => {
+    e.persist();
+    this.setState(prevState => ({
+      property: {
+        ...prevState.property, unitNumber: e.target.value}}
+    ));
+    console.log(this.state)
+  };
   renderEditPropertyForm = () => {
     if(!this.isLoaded()) return null;
 
@@ -51,23 +70,37 @@ class Edit extends Component {
         />
         <Form.Input
         fluid
-        label='Description'
-        name="description"
-        placeholder={this.state.property.description}
+        label='Street'
+        name="street"
+        placeholder={this.state.property.street}
+        onChange={this.handleStreetChange}
+        />
+        <Form.Input
+        fluid
+        label='House Number'
+        name="houseNumber"
+        placeholder={this.state.property.houseNumber}
+        onChange={this.handleDescriptionChange}
+        />
+        <Form.Input
+        fluid
+        label='Unit Number'
+        name="unitNumber"
+        placeholder={this.state.property.unitNumber}
         onChange={this.handleDescriptionChange}
         />
         <Button
         type='submit'
         onClick={() => {
           this.updateProperty(this.state.property)
-          this.props.history.push('/');
+          this.props.history.push('/properties');
         }}
         >Update</Button>
         <Button
         type='submit'
         onClick={() => {
           deleteProperty(this.state.property.id)
-          this.props.history.push('/');
+          this.props.history.push('/properties');
         }}
         >Delete</Button>
         </Form>
@@ -87,7 +120,7 @@ class Edit extends Component {
 
     return (
       <>
-        <h1> Edit Service Property Page </h1>
+        <h1> Edit Property Page </h1>
         { this.renderEditPropertyForm() }
         { this.renderLoading() }
       </>

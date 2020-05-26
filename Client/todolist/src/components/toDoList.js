@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import List from "./serviceRequests/listRequests.js"
+import List from "./serviceRequests/listIncompleteRequests.js"
+import ListAll from "./serviceRequests/listRequests.js"
 import ShowReq from './serviceRequests/showRequest.js'
 import NewReq from './serviceRequests/newServiceRequest.js'
 import EditReq from './serviceRequests/editServiceRequest.js'
@@ -28,6 +29,9 @@ class ToDoList extends Component {
           <Link to="/">Home</Link>
         </li>
         <li>
+          <Link to="/service-request/all">All Requests</Link>
+        </li>
+        <li>
           <Link to="/properties">Properties</Link>
         </li>
 
@@ -39,13 +43,19 @@ class ToDoList extends Component {
         <Route exact path="/">
           <List />
         </Route>
-        <Route path="/new">
+        <Route exact path="/service-request">
+          <List />
+        </Route>
+        <Route path="/service-request/new">
           <NewReq />
         </Route>
-        <Route path="/edit/:id">
+        <Route path="/service-request/edit/:id">
           <EditReq />
         </Route>
-        <Route path='/:id'>
+        <Route path="/service-request/all">
+          <ListAll />
+        </Route>
+        <Route path='/service-request/:id'>
           <ShowReq />
         </Route>
         <Route exact path="/properties">
@@ -54,7 +64,7 @@ class ToDoList extends Component {
         <Route path="/properties/new">
           <NewProp />
         </Route>
-        <Route path="/properties/edit">
+        <Route path="/properties/edit/:id">
           <EditProp />
         </Route>
         <Route path='/properties/:id'>

@@ -33,11 +33,26 @@ class New extends Component {
             placeholder='Street'
             onChange={this.handleChange}
           />
+          <Form.Input
+            fluid
+            label='House Number'
+            name="houseNumber"
+            placeholder='House Number'
+            onChange={this.handleChange}
+          />
+          <Form.Input
+            fluid
+            label='Unit Number'
+            name="unitNumber"
+            placeholder='Unit Number*'
+            onChange={this.handleChange}
+          />
           <Button
             type='submit'
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault();
               createProperty(this.state)
-              this.props.history.push('/');
+              this.props.history.push('/properties');
             }}
           >Save</Button>
         </Form>

@@ -35,7 +35,8 @@ class New extends Component {
           />
           <Button
             type='submit'
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault();
               createRequest(this.state)
               this.props.history.push('/');
             }}

@@ -58,15 +58,15 @@ class Edit extends Component {
         />
         <Button
         type='submit'
-        onClick={() => {
-          this.updateRequest(this.state.serviceRequest)
+        onClick={async () => {
+          await this.updateRequest(this.state.serviceRequest)
           this.props.history.push('/');
         }}
         >Update</Button>
         <Button
         type='submit'
-        onClick={() => {
-          deleteRequest(this.state.serviceRequest.id)
+        onClick={async () => {
+          await  deleteRequest(this.state.serviceRequest.id)
           this.props.history.push('/');
         }}
         >Delete</Button>

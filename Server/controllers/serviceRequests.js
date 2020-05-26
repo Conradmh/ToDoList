@@ -31,11 +31,31 @@ exports.create = (req, res) => {
       });
 };
 
-// Retrieve all Service Requests from the database/find by condition
+// Retrieve all Service Requests from the database
+// Retrieve all Properties from the database/find by condition
 exports.findAll = (req, res) => {
   const title = req.query.title;
   let condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
   Request.findAll({ where: condition })
+  .then(data => {
+    res.send(data);
+  })
+  .catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "An error occured while retrieving the Property"
+    });
+  });
+};
+//find by condition
+exports.findAllActive = (req, res) => {
+  // const completed = req.query.completed;
+  // let condition = !completed ? { completed: { [Op.like]: `%${completed}%` } } : null;
+  Request.findAll({
+    where: {
+        completed: false
+      }
+  })
   .then(data => {
     res.send(data);
   })
