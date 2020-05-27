@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, Checkbox } from 'semantic-ui-react';
+import { Button, Form, Checkbox, Card } from 'semantic-ui-react';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom'
 import { getServiceRequestByPk, updateRequest } from '../../serviceRequests.services';
@@ -39,30 +39,30 @@ class Show extends Component {
     return (
 
       <>
-        <ul>
+        <Card>
+          <h2>
+          {this.state.serviceRequest.title}
+          </h2>
+          <Card.Content>
+          Description: {this.state.serviceRequest.description}
+          </Card.Content>
+          <ul>
           <li>
-            {this.state.serviceRequest.title}
+          Submitted: {moment(`${this.state.serviceRequest.createdAt}`).format("dddd, MMMM Do YYYY, h:mm:ss a")}
           </li>
-          <li>
-            {this.state.serviceRequest.description}
-          </li>
-          <li>
-            {moment(`${this.state.serviceRequest.createdAt}`).format("dddd, MMMM Do YYYY, h:mm:ss a")}
-          </li>
-          <li>
-            Submitted: {moment(`${this.state.serviceRequest.createdAt}`).fromNow()}
-          </li>
+
           <Form>
-            <Form.Field>
-              <Checkbox
-                label="Request Completed"
-                name="completed"
-                checked={this.state.serviceRequest.completed}
-                onChange={this.toggle}
-              />
-            </Form.Field>
+          <Form.Field>
+          <Checkbox
+          label="Request Completed"
+          name="completed"
+          checked={this.state.serviceRequest.completed}
+          onChange={this.toggle}
+          />
+          </Form.Field>
           </Form>
-        </ul>
+          </ul>
+        </Card>
       </>
     )
 

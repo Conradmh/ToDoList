@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import List from "./serviceRequests/listIncompleteRequests.js"
-import ListAll from "./serviceRequests/listRequests.js"
-import ShowReq from './serviceRequests/showRequest.js'
-import NewReq from './serviceRequests/newServiceRequest.js'
-import EditReq from './serviceRequests/editServiceRequest.js'
-import Properties from "./properties/listProperties.js"
-import ShowProp from './properties/showProperty.js'
-import EditProp from './properties/editProperty.js'
+import { Icon } from 'semantic-ui-react';
+import List from "./serviceRequests/listIncompleteRequests.js";
+import ListAll from "./serviceRequests/listRequests.js";
+import ShowReq from './serviceRequests/showRequest.js';
+import NewReq from './serviceRequests/newServiceRequest.js';
+import EditReq from './serviceRequests/editServiceRequest.js';
+import Properties from "./properties/listProperties.js";
+import ShowProp from './properties/showProperty.js';
+import EditProp from './properties/editProperty.js';
 import NewProp from './properties/newProperty.js'
 import {
   BrowserRouter as Router,
@@ -71,9 +72,9 @@ class ToDoList extends Component {
           <ShowProp />
         </Route>
       </Switch>
-    </div>
-      </Router>
-      </React.Fragment>
+      </div>
+    </Router>
+    </React.Fragment>
     );
   }
 }

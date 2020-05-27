@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import { withRouter } from 'react-router'
 import { getActiveRequests } from '../../serviceRequests.services';
+const moment = require('moment');
 
 class ActiveList extends Component {
   constructor(props){
@@ -40,7 +41,7 @@ class ActiveList extends Component {
     const requests = sortedRequests.map((reqs) => {
       return (
         <li>
-        <Link to={`/service-request/${reqs.id}`}>{reqs.title}</Link>
+        <Link to={`/service-request/${reqs.id}`}>{reqs.title}</Link> -{moment(`${reqs.createdAt}`).fromNow()}
         </li>
       )
     });
