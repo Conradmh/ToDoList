@@ -6,6 +6,9 @@ module.exports = (sequelize, Sequelize) => {
     description: {
       type:Sequelize.STRING
     },
+    priority: {
+      type:Sequelize.INTEGER
+    },
     completed: {
       type:Sequelize.BOOLEAN,
       defaultValue: false

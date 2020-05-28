@@ -44,6 +44,9 @@ class Show extends Component {
           {this.state.serviceRequest.title}
           </h2>
           <Card.Content>
+          Priority: {this.state.serviceRequest.priority}
+          </Card.Content>
+          <Card.Content>
           Description: {this.state.serviceRequest.description}
           </Card.Content>
           <ul>

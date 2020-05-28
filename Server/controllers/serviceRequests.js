@@ -5,7 +5,7 @@ const Op = db.Sequelize.Op;
 // Create and Save a new Service Requests
 exports.create = (req, res) => {
     // Validate request
-    if (!req.body.title || !req.body.description ) {
+    if (!req.body.title || !req.body.description || !req.body.priority) {
       res.status(400).send({
         message: "Content can not be empty!"
       });
@@ -15,7 +15,8 @@ exports.create = (req, res) => {
     // Create a Request
     const request = {
       title: req.body.title,
-      description: req.body.description
+      description: req.body.description,
+      priority: req.body.priority
     };
 
     // Save Request in the database
