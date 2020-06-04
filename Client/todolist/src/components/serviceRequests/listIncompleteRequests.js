@@ -9,74 +9,61 @@ import { withRouter } from 'react-router'
 import { getActiveRequests } from '../../serviceRequests.services';
 const moment = require('moment');
 
+const NEWEST = 'newest';
+const OLDEST = 'oldest';
+const PRIORITY = 'priority'
+const TITLE = 'title'
+const ASC = 'ASC';
+const DESC = 'DESC';
+
+
 class ActiveList extends Component {
   constructor(props){
     super(props);
     this.state = {
       serviceRequests: [],
-      sortIdentifier: 0
+      sortIdentifier: "createdAt",
+      sortOrder: ASC,
     }
-  }
-  componentDidMount(){
-    this.getActiveRequests();
   };
-  getActiveRequests = async () => {
-    const serviceRequests = await getActiveRequests();
+  componentDidMount(){
+    this.getActRequests();
+  };
+  getActRequests = async () => {
+    const serviceRequests = await getActiveRequests(this.state.sortIdentifier, this.state.sortOrder);
     console.log(serviceRequests);
     this.setState({serviceRequests});
   };
-  sortRequests = () => {
-    const requests = this.state.serviceRequests
-    if (this.state.sortIdentifier === 0) {
-      this.sortRequestsByNewest(requests)
-    } else if (this.state.sortIdentifier === 1) {
-      this.sortRequestsByOldest(requests)
-    } else if (this.state.sortIdentifier === 2) {
-      this.sortRequestsByHighestPriority(requests)
-    } else if (this.state.sortIdentifier === 3) {
-      this.sortRequestsAlphabetically(requests)
-    } else {
-      return null
-    }
-  };
-  sortRequestsByNewest = (arr) => {
-    const newArr = arr.sort((a, b) => {
-      if (a.createdAt < b.createdAt) return 1
-      return a.createdAt > b.createdAt ? -1 : 0
-    })
-    return  newArr
-  };
-  sortRequestsByOldest = (arr) => {
-    const newArr = arr.sort((a, b) => {
-      if (a.createdAt < b.createdAt) return -1
-      return a.createdAt > b.createdAt ? 1 : 0
-    })
-    return  newArr
-  };
-  sortRequestsAlphabetically = (arr) => {
-    const newArr = arr.sort((a, b) => {
-      if (a.title < b.title) return -1
-      return a.title > b.title ? 1 : 0
-    })
-    return  newArr
-  };
-  sortRequestsByHighestPriority = (arr) => {
-    const newArr = arr.sort((a, b) => {
-      if (a.priority < b.priority) return 1
-      return a.priority > b.priority ? -1 : 0
-    })
-    return  newArr
-  };
   handleDropDown = (e, data) =>{
-    this.setState({
-      [data.name]: data.value
-    });
+    const nextState = {};
+    switch(data.value){
+      case NEWEST:
+        nextState.sortIdentifier = "createdAt";
+        nextState.sortOrder = DESC;
+        break;
+      case OLDEST:
+        nextState.sortIdentifier = "createdAt";
+        nextState.sortOrder = ASC;
+        break;
+      case PRIORITY:
+        nextState.sortIdentifier = PRIORITY;
+        nextState.sortOrder = DESC;
+        break;
+      case TITLE:
+        nextState.sortIdentifier = TITLE;
+        nextState.sortOrder = ASC;
+        break;
+      default:
+        nextState.sortIdentifier = "createdAt";
+        nextState.sortOrder = ASC;
+    }
+    this.setState(nextState);
   };
   renderServiceRequest =  () => {
     if(!this.isLoaded()) return null;
-    const sortedRequests = this.sortRequestsByNewest(this.state.serviceRequests)
-    console.log(sortedRequests, 'this is sorted');
-    const requests = sortedRequests.map((reqs) => {
+    // const sortedRequests = this.sortRequestsByNewest(this.state.serviceRequests)
+    // console.log(sortedRequests, 'this is sorted');
+    const requests = this.state.serviceRequests.map((reqs) => {
       return (
         <li>
         <Link to={`/service-request/${reqs.id}`}>{reqs.title}</Link> submitted {moment(`${reqs.createdAt}`).fromNow()}
@@ -107,22 +94,22 @@ class ActiveList extends Component {
       {
         key: 0,
         text:'Newest',
-        value: 0,
+        value: NEWEST,
       },
       {
         key: 1,
         text:'Oldest',
-        value: 1,
+        value: OLDEST,
       },
       {
         key: 2,
         text:'Highest Priority',
-        value: 2,
+        value: PRIORITY,
       },
       {
         key: 3,
         text:'A-Z',
-        value: 3,
+        value: TITLE,
       }
     ]
     return (
@@ -138,7 +125,7 @@ class ActiveList extends Component {
             onChange={this.handleDropDown}
             options={sortOptions}
           />
-          <Button onClick={this.sortRequests}> Sort </Button>
+          <Button onClick={this.getActRequests}> Sort </Button>
         </h2>
         <ul>
             { this.renderServiceRequest() }

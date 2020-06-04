@@ -15,10 +15,11 @@ const getAllRequests = async () => {
 };
 export { getAllRequests };
 
-const getActiveRequests = async () => {
+const getActiveRequests = async (sortKey = 'createdAt', sortOrder = 'ASC') => {
+
   try {
     const activeServiceRequests = await
-    fetch("http://localhost:8040/api/servicerequests")
+    fetch(`http://localhost:8040/api/servicerequests?sortKey=${sortKey}&sortOrder=${sortOrder}`)
 
     const responseRequests = await activeServiceRequests.json();
 

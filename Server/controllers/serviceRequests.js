@@ -35,9 +35,32 @@ exports.create = (req, res) => {
 // Retrieve all Service Requests from the database
 // Retrieve all Properties from the database/find by condition
 exports.findAll = (req, res) => {
-  const title = req.query.title;
-  let condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-  Request.findAll({ where: condition })
+  // const title = req.query.title;
+  // let condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+  let condition = null;
+  // if(title){
+  //   condition = { title: { [Op.like]: `%${title}%` } };
+  // };
+  let sortOrder = 'ASC';
+  let sortKey = 'createdAt';
+
+  if(req.query.sortOrder){
+    sortOrder = req.query.sortOrder;
+  }
+
+  if(req.query.sortKey){
+    sortKey = req.query.sortKey;
+  }
+  console.log(req.query, 'query');
+  console.log(condition, 'condirice');
+  Request.findAll(
+    {
+      where: condition,
+      order: [
+          [sortKey, sortOrder]
+      ]
+    }
+  )
   .then(data => {
     res.send(data);
   })
@@ -48,6 +71,35 @@ exports.findAll = (req, res) => {
     });
   });
 };
+// trial
+// exports.findAll = (req, res) => {
+//
+//   let sortOrder = 'ASC';
+//   let sortKey = 'createdAt';
+//
+//   if(req.query.order){
+//     sortOrder = req.query.order;
+//   }
+//
+//   if(req.query.sortKey){
+//     sortKey = req.query.sortKey;
+//   }
+//
+//   Request.findAll({
+//     order: [
+//       [sortKey, sortOrder]
+//     ]
+//   })
+//   .then(data => {
+//     res.send(data);
+//   })
+//   .catch(err => {
+//     res.status(500).send({
+//       message:
+//         err.message || "An error occured while retrieving the Property"
+//     });
+//   });
+// };
 //find by condition
 exports.findAllActive = (req, res) => {
   // const completed = req.query.completed;

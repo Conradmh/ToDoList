@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Icon } from 'semantic-ui-react';
 import List from "./serviceRequests/listIncompleteRequests.js";
 import ListAll from "./serviceRequests/listRequests.js";
 import ShowReq from './serviceRequests/showRequest.js';

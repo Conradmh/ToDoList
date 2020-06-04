@@ -12,6 +12,12 @@ module.exports = (sequelize, Sequelize) => {
     completed: {
       type:Sequelize.BOOLEAN,
       defaultValue: false
+    },
+    propertyId: {
+      type:Sequelize.STRING
+    },
+    createdByUserId: {
+      type:Sequelize.STRING
     }
   });
 

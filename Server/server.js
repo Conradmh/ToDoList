@@ -29,6 +29,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 // splash route
 
 app.get('/', (req, res) => {
+  console.log(req.query,'queueue');
     res.json({message: "Login / Splash Page"})
 });
 
