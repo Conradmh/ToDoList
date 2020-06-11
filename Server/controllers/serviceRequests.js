@@ -16,7 +16,10 @@ exports.create = (req, res) => {
     const request = {
       title: req.body.title,
       description: req.body.description,
-      priority: req.body.priority
+      priority: req.body.priority,
+      propertyId: req.body.propertyId,
+      createdByUserId: req.body.createdByUserId
+
     };
 
     // Save Request in the database
@@ -71,36 +74,8 @@ exports.findAll = (req, res) => {
     });
   });
 };
-// trial
-// exports.findAll = (req, res) => {
-//
-//   let sortOrder = 'ASC';
-//   let sortKey = 'createdAt';
-//
-//   if(req.query.order){
-//     sortOrder = req.query.order;
-//   }
-//
-//   if(req.query.sortKey){
-//     sortKey = req.query.sortKey;
-//   }
-//
-//   Request.findAll({
-//     order: [
-//       [sortKey, sortOrder]
-//     ]
-//   })
-//   .then(data => {
-//     res.send(data);
-//   })
-//   .catch(err => {
-//     res.status(500).send({
-//       message:
-//         err.message || "An error occured while retrieving the Property"
-//     });
-//   });
-// };
-//find by condition
+
+//find by active condition
 exports.findAllActive = (req, res) => {
   // const completed = req.query.completed;
   // let condition = !completed ? { completed: { [Op.like]: `%${completed}%` } } : null;
@@ -119,6 +94,27 @@ exports.findAllActive = (req, res) => {
     });
   });
 };
+
+//find by userId
+exports.findByUserId = (req, res) => {
+  // const userId = req.query.createdByUserId;
+  // let condition = !userId ? { userId: { [Op.like]: `%${userId}%` } } : null;
+  Request.findAll({
+    where: {
+        createdByUserId: 0
+      }
+  })
+  .then(data => {
+    res.send(data);
+  })
+  .catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "An error occured while retrieving the Request"
+    });
+  });
+};
+
 
 // Find a single Request  with an id
 exports.findOne = (req, res) => {
@@ -202,18 +198,3 @@ exports.deleteAll = (req, res) => {
       });
     });
 };
-
-// Find all Service Requests by boolean
-//
-// exports.findAllActive = (req, res) => {
-//   Request.findAll({ where: { active: true } })
-//     .then(data => {
-//       res.send(data);
-//     })
-//     .catch(err => {
-//       res.status(500).send({
-//         message:
-//           err.message || "Some error occurred while retrieving properties."
-//       });
-//     });
-// };

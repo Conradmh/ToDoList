@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { setSortOrder, getServiceRequests } from '../../actions';
 import { Button, Dropdown } from 'semantic-ui-react';
 import {
   BrowserRouter as
@@ -20,50 +22,47 @@ const DESC = 'DESC';
 class ActiveList extends Component {
   constructor(props){
     super(props);
-    this.state = {
-      serviceRequests: [],
-      sortIdentifier: "createdAt",
-      sortOrder: ASC,
-    }
+    console.log(props, 'props yo')
   };
   componentDidMount(){
-    this.getActRequests();
+    this.props.getServiceRequests(this.props.sortOrder, this.props.sortKey);
   };
-  getActRequests = async () => {
-    const serviceRequests = await getActiveRequests(this.state.sortIdentifier, this.state.sortOrder);
-    console.log(serviceRequests);
-    this.setState({serviceRequests});
-  };
+
   handleDropDown = (e, data) =>{
-    const nextState = {};
+
+    let sortKey;
+    let sortOrder;
     switch(data.value){
       case NEWEST:
-        nextState.sortIdentifier = "createdAt";
-        nextState.sortOrder = DESC;
+        sortKey = "createdAt";
+        sortOrder = DESC;
         break;
       case OLDEST:
-        nextState.sortIdentifier = "createdAt";
-        nextState.sortOrder = ASC;
+        sortKey = "createdAt";
+        sortOrder = ASC;
         break;
       case PRIORITY:
-        nextState.sortIdentifier = PRIORITY;
-        nextState.sortOrder = DESC;
+        sortKey = PRIORITY;
+        sortOrder = DESC;
         break;
       case TITLE:
-        nextState.sortIdentifier = TITLE;
-        nextState.sortOrder = ASC;
+        sortKey = TITLE;
+        sortOrder = ASC;
         break;
       default:
-        nextState.sortIdentifier = "createdAt";
-        nextState.sortOrder = ASC;
+        sortKey = "createdAt";
+        sortOrder = ASC;
     }
-    this.setState(nextState);
+    console.log('dispatch')
+    this.props.setSortOrder(sortOrder, sortKey);
+    this.props.getServiceRequests(sortOrder, sortKey);
+
   };
   renderServiceRequest =  () => {
     if(!this.isLoaded()) return null;
     // const sortedRequests = this.sortRequestsByNewest(this.state.serviceRequests)
     // console.log(sortedRequests, 'this is sorted');
-    const requests = this.state.serviceRequests.map((reqs) => {
+    const requests = this.props.serviceRequests.map((reqs) => {
       return (
         <li>
         <Link to={`/service-request/${reqs.id}`}>{reqs.title}</Link> submitted {moment(`${reqs.createdAt}`).fromNow()}
@@ -83,7 +82,7 @@ class ActiveList extends Component {
     return <div>Loading...</div>;
   };
   isLoaded = () => {
-      if(this.state.serviceRequests) return true;
+      if(this.props.isLoaded) return true;
       return false;
   };
   goToNew = () => {
@@ -114,9 +113,9 @@ class ActiveList extends Component {
     ]
     return (
       <React.Fragment>
-
-        <h1> Active Service Reqeuests     <Button onClick={() => this.goToNew()}>New Request</Button>
-</h1>
+        <h1>
+          Active Service Reqeuests     <Button onClick={() => this.goToNew()}>New Request</Button>
+        </h1>
         <h2>
           <Dropdown
             selection
@@ -125,7 +124,6 @@ class ActiveList extends Component {
             onChange={this.handleDropDown}
             options={sortOptions}
           />
-          <Button onClick={this.getActRequests}> Sort </Button>
         </h2>
         <ul>
             { this.renderServiceRequest() }
@@ -138,4 +136,24 @@ class ActiveList extends Component {
     );
   }
 }
-export default withRouter(ActiveList);
+
+function mapStateToProps(state) {
+  console.log(state, 'mapStateToProps');
+  return {
+    serviceRequests: state.serviceRequests.serviceRequests,
+    sortOrder: state.serviceRequests.sortOrder,
+    sortKey: state.serviceRequests.sortKey,
+    isLoaded: state.serviceRequests.isLoaded,
+   }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setSortOrder: (sortOrder, sortKey) => dispatch(setSortOrder(sortOrder, sortKey)),
+    getServiceRequests: (sortOrder, sortKey) => dispatch(getServiceRequests(sortOrder, sortKey)),
+  };
+}
+
+const ActiveListConnected = connect(mapStateToProps, mapDispatchToProps)(ActiveList);
+
+export default withRouter(ActiveListConnected);

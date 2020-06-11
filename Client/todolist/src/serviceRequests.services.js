@@ -1,7 +1,7 @@
 const getAllRequests = async () => {
   try {
     const serviceRequests = await
-    fetch("http://localhost:8040/api/servicerequests/all")
+    fetch("http://localhost:8040/api/servicerequests")
 
     const responseRequests = await serviceRequests.json();
 
@@ -15,7 +15,24 @@ const getAllRequests = async () => {
 };
 export { getAllRequests };
 
-const getActiveRequests = async (sortKey = 'createdAt', sortOrder = 'ASC') => {
+const getAllRequestsByUserId = async (userId) => {
+  try {
+    const serviceRequests = await
+    fetch("http://localhost:8040/api/servicerequests/:userId")
+
+    const responseRequests = await serviceRequests.json();
+
+      // this.setState({
+      // serviceRequests: responseRequests
+      // });
+      return responseRequests
+  } catch (err) {
+      console.log(err);
+  }
+};
+export { getAllRequestsByUserId };
+
+const getActiveRequests = async (sortOrder = 'ASC', sortKey = 'createdAt') => {
 
   try {
     const activeServiceRequests = await

@@ -12,6 +12,9 @@ module.exports = app => {
   // Retrieve all active serviceRequests
   router.get("/", serviceRequests.findAll);
 
+  // Retrieve all serviceRequests by userId
+  router.get("/:userId", serviceRequests.findByUserId);
+
   // Retrieve a single serviceRequests with id
   router.get("/:id", serviceRequests.findOne);
 

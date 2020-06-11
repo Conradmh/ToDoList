@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ListAll from "./serviceRequests/listRequests.js";
+import List from "./serviceRequests/listTenantRequests.js";
 import ShowReq from './serviceRequests/showRequest.js';
 import NewReq from './serviceRequests/newServiceRequest.js';
 import {
