@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Button } from 'semantic-ui-react'
+import { connect } from 'react-redux';
+import { setPropertySortOrder, setProperties } from '../../actions';
+import { Button } from 'semantic-ui-react';
 import {
   BrowserRouter as
   Route,
@@ -8,11 +10,10 @@ import {
 import { withRouter } from 'react-router'
 import { getProperties } from '../../properties.services';
 
-class List extends Component {
+class PropertiesList extends Component {
   constructor(props){
     super(props);
     this.state = {
-      properties: []
     }
   }
   componentDidMount(){
@@ -70,4 +71,23 @@ class List extends Component {
     );
   }
 }
-export default withRouter(List);
+function mapStateToProps(state) {
+  console.log(state, 'mapStateToProps');
+  return {
+    properties: state.properties.properties,
+    sortOrder: state.properties.sortOrder,
+    sortKey: state.properties.sortKey,
+    isLoaded: state.properties.isLoaded,
+   }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setPropertySortOrder: (sortOrder, sortKey) => dispatch(setPropertySortOrder(sortOrder, sortKey)),
+    setProperties: (sortOrder, sortKey) => dispatch(setProperties(sortOrder, sortKey)),
+  };
+}
+
+const PropertiesListConnected = connect(mapStateToProps, mapDispatchToProps)(PropertiesList);
+
+export default withRouter(PropertiesListConnected);

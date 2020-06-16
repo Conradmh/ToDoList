@@ -79,6 +79,7 @@ class Show extends Component {
       return false;
   }
   render(){
+    console.log(this.state, 'this is state at render for show');
     return (
       <React.Fragment>
         <h1> Service Request Info   <Button onClick={() => this.goToEdit()}>edit</Button></h1>

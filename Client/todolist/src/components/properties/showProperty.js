@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'semantic-ui-react'
+import { Button, Form, Card } from 'semantic-ui-react';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom'
 import { getPropertyByPk } from '../../properties.services';
@@ -27,21 +27,20 @@ class Show extends Component {
     return (
 
       <>
-        <ul>
-          <li>
-            {JSON.stringify(this.state.property.name)}
-          </li>
-          <li>
-            {JSON.stringify(this.state.property.street)}
-          </li>
-          <li>
-            {JSON.stringify(this.state.property.houseNumber)}
-          </li>
-          <li>
-            {JSON.stringify(this.state.property.unitNumber)}
-          </li>
-
-        </ul>
+      <Card>
+        <h2>
+          {this.state.property.name}
+          </h2>
+          <Card.Content>
+            Street: {this.state.property.street}
+          </Card.Content>
+          <Card.Content>
+            House Number: {this.state.property.houseNumber}
+          </Card.Content>
+          <Card.Content>
+            Unit Number: {this.state.property.unitNumber}
+          </Card.Content>
+      </Card>
       </>
     )
 

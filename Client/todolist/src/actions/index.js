@@ -1,5 +1,8 @@
-import {getActiveRequests} from '../serviceRequests.services'
+import {getActiveRequests} from '../serviceRequests.services';
+import {getProperties} from '../properties.services'
 export const setServiceReqSortOrder = 'setServiceReqSortOrder';
+export const setPropertiesSortOrder = 'setServiceReqSortOrder';
+
 
 //Thunk Fancy Action Combiner
 export const getServiceRequests = (sortOrder, sortKey) => {
@@ -34,6 +37,36 @@ export const loadServiceRequestsError = errors => ({
 
 export const setSortOrder = (sortOrder, sortKey) => ({
   type: setServiceReqSortOrder,
+  payload: {
+    sortOrder,
+    sortKey,
+  },
+});
+
+// Properties Thunk
+export const setProperties = (sortOrder, sortKey) => {
+  return async (dispatch) => {
+    dispatch(loadProperties());
+    const properties = await getProperties(sortOrder, sortKey)
+    console.log('properties', properties);
+    dispatch(loadPropertiesSuccess(properties));
+  }
+};
+export const LOAD_PROPERTIES = 'loadProperties';
+export const loadProperties = () => ({
+  type: LOAD_PROPERTIES,
+});
+
+export const LOAD_PROPERTIES_SUCCESS = 'loadPropertiesSuccess';
+export const loadPropertiesSuccess = properties => ({
+  type: LOAD_PROPERTIES_SUCCESS,
+  payload: {
+    properties,
+  },
+});
+
+export const setPropertySortOrder = (sortOrder, sortKey) => ({
+  type: setPropertiesSortOrder,
   payload: {
     sortOrder,
     sortKey,
