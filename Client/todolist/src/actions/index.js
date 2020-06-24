@@ -1,5 +1,5 @@
-import {getActiveRequests} from '../serviceRequests.services';
-import {getProperties} from '../properties.services'
+import { getActiveRequests}  from '../serviceRequests.services';
+import { getProperties, updateProperty } from '../properties.services'
 export const setServiceReqSortOrder = 'setServiceReqSortOrder';
 export const setPropertiesSortOrder = 'setServiceReqSortOrder';
 
@@ -52,6 +52,21 @@ export const setProperties = (sortOrder, sortKey) => {
     dispatch(loadPropertiesSuccess(properties));
   }
 };
+
+export const setCurrentProperty = (currentProperty) => {
+  return (dispatch) => {
+    console.log(currentProperty, 'currentProperty to be updated');
+    dispatch(getCurrentProperty(currentProperty));
+  }
+};
+
+export const updateCurProperty = (updatedProperty) => {
+  return (dispatch) => {
+    console.log(updatedProperty, 'property from form/local state');
+    dispatch(updateProperty(updatedProperty.id, updatedProperty));
+  }
+}
+
 export const LOAD_PROPERTIES = 'loadProperties';
 export const loadProperties = () => ({
   type: LOAD_PROPERTIES,
@@ -62,6 +77,22 @@ export const loadPropertiesSuccess = properties => ({
   type: LOAD_PROPERTIES_SUCCESS,
   payload: {
     properties,
+  },
+});
+
+export const GET_CURRENTPROPERTY = 'getCurrentProperty';
+export const getCurrentProperty = currentProperty => ({
+  type: GET_CURRENTPROPERTY,
+  payload: {
+    currentProperty,
+  },
+});
+
+export const UPDATE_CURRENTPROPERTY = 'updateCurrentProperty';
+export const updateCurrentProperty = updatedProperty => ({
+  type: UPDATE_CURRENTPROPERTY,
+  payload: {
+    updatedProperty,
   },
 });
 

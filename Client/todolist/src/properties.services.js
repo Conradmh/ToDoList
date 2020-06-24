@@ -55,14 +55,14 @@ export { createProperty };
 
 
 
-const updateProperty = async (propertyId, state) => {
+const updateProperty = async (propertyId, currentProperty) => {
   try {
 
     const url = 'http://localhost:8040/api/properties/' + propertyId;
 
     const serverResponse = await fetch(url, {
       method: 'PUT',
-      body: JSON.stringify(state),
+      body: JSON.stringify(currentProperty),
       headers: {
         'Content-Type': 'application/json'
       }

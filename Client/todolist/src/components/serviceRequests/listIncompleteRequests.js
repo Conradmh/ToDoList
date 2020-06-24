@@ -60,8 +60,7 @@ class ActiveList extends Component {
   };
   renderServiceRequest =  () => {
     if(!this.isLoaded()) return null;
-    // const sortedRequests = this.sortRequestsByNewest(this.state.serviceRequests)
-    // console.log(sortedRequests, 'this is sorted');
+
     const requests = this.props.serviceRequests.map((reqs) => {
       return (
         <li>

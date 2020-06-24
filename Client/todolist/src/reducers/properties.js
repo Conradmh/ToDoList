@@ -1,7 +1,9 @@
 import {
   setPropertiesSortOrder,
   LOAD_PROPERTIES,
-  LOAD_PROPERTIES_SUCCESS
+  LOAD_PROPERTIES_SUCCESS,
+  GET_CURRENTPROPERTY,
+  UPDATE_CURRENTPROPERTY,
 } from '../actions';
 
 export const NEWEST = 'newest';
@@ -42,13 +44,39 @@ const properties = (state = initialState, action) => {
           {},
           state,
           {
-            serviceRequests: action.payload.properties,
+            properties: action.payload.properties,
             isLoaded: true,
+            currentProperty: null,
+
+          }
+        );
+    case GET_CURRENTPROPERTY:
+        return Object.assign(
+          {},
+          state,
+          {
+            currentProperty: action.payload.currentProperty,
+          }
+        );
+    case UPDATE_CURRENTPROPERTY:
+        return Object.assign(
+          {},
+          state,
+          {
+            currentProperty: action.payload.updatedProperty,
           }
         );
     default:
       return state
   }
-}
+};
 
+//Selector
+
+export const selectPropertyById =
+(state, id) => {
+  const foundProperty = state.properties.properties.find(property => property.id == id)
+  console.log(foundProperty, 'this is foundPropertys');
+  return foundProperty
+}
 export default properties;

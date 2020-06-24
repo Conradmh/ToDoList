@@ -17,22 +17,17 @@ class PropertiesList extends Component {
     }
   }
   componentDidMount(){
-    this.getAllProperties();
-  };
-  getAllProperties = async () => {
-    const properties = await getProperties();
-    console.log(properties);
-    this.setState({properties});
+    this.props.setProperties(this.props.sortOrder, this.props.sortKey);
   };
   goToNew = () => {
     this.props.history.push(`/properties/new`)
   };
   renderProperty = () => {
     if(!this.isLoaded()) return null;
-    const properties = this.state.properties.map((units) => {
+    const properties = this.props.properties.map((units) => {
       return (
         <li>
-        <Link to={`/properties/${units.id}`}>{units.name}</Link>
+        <Link key={units.id} to={`/properties/${units.id}`}>{units.name}</Link>
         </li>
       )
     });
@@ -49,7 +44,7 @@ class PropertiesList extends Component {
     return <div>Loading...</div>;
   }
   isLoaded = () => {
-      if(this.state.properties) return true;
+      if(this.props.properties) return true;
       return false;
   }
   render(props){

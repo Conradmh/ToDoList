@@ -1,105 +1,97 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import { getPropertyByPk, updateProperty, deleteProperty } from '../../properties.services';
+import { connect } from 'react-redux';
+import { updateCurProperty } from '../../actions'
 import { Form, Button} from 'semantic-ui-react';
 
 class Edit extends Component {
   constructor(props){
     super(props);
     this.state = {
-      property: {}
+      propertyToEdit: this.props.currentProperty
+
     }
-  }
+  };
   componentDidMount(){
-    this.findById();
-  };
-  findById = async () => {
-
-    const property = await getPropertyByPk(this.props.match.params.id);
-    this.setState({property});
-  };
-  updateProperty = async () => {
-    const serviceReq = this.state.property;
-
-    await updateProperty(serviceReq);
-    console.log(serviceReq, 'serviceReq');
+    console.log(this.state.propertyToEdit, 'state in edit bruh');
   };
   handleNameChange = (e) => {
     e.persist();
     this.setState(prevState => ({
-      property: {
-        ...prevState.property, name: e.target.value}}
+      propertyToEdit: {
+        ...prevState.propertyToEdit, name: e.target.value}}
     ));
     console.log(this.state)
   };
   handleStreetChange = (e) => {
     e.persist();
     this.setState(prevState => ({
-      property: {
-        ...prevState.property, street: e.target.value}}
+      propertyToEdit: {
+        ...prevState.propertyToEdit, street: e.target.value}}
     ));
     console.log(this.state)
   };
   handleHouseNumberChange = (e) => {
     e.persist();
     this.setState(prevState => ({
-      property: {
-        ...prevState.property, houseNumber: e.target.value}}
+      propertyToEdit: {
+        ...prevState.propertyToEdit, houseNumber: e.target.value}}
     ));
     console.log(this.state)
   };
   handleUnitNumberChange = (e) => {
     e.persist();
     this.setState(prevState => ({
-      property: {
-        ...prevState.property, unitNumber: e.target.value}}
+      propertyToEdit: {
+        ...prevState.propertyToEdit, unitNumber: e.target.value}}
     ));
     console.log(this.state)
+  };
+  handleOnSubmit = (e) => {
+    e.preventDefault();
+    this.props.updateCurProperty(this.state.propertyToEdit);
+
+    this.props.history.push('/properties');
   };
   renderEditPropertyForm = () => {
     if(!this.isLoaded()) return null;
 
     return (
       <>
-      <Form>
+      <Form onSubmit={this.handleOnSubmit}>
         <Form.Input
         fluid
-        label='Property'
-        placeholder={this.state.property.name}
-        onChange={this.handlePropertyChange}
+        label='Name'
+        placeholder={this.state.propertyToEdit.name}
+        onChange={this.handleNameChange}
         />
         <Form.Input
         fluid
         label='Street'
         name="street"
-        placeholder={this.state.property.street}
+        placeholder={this.state.propertyToEdit.street}
         onChange={this.handleStreetChange}
         />
         <Form.Input
         fluid
         label='House Number'
         name="houseNumber"
-        placeholder={this.state.property.houseNumber}
+        placeholder={this.state.propertyToEdit.houseNumber}
         onChange={this.handleDescriptionChange}
         />
         <Form.Input
         fluid
         label='Unit Number'
         name="unitNumber"
-        placeholder={this.state.property.unitNumber}
+        placeholder={this.state.propertyToEdit.unitNumber}
         onChange={this.handleDescriptionChange}
         />
         <Button
-        type='submit'
-        onClick={() => {
-          this.updateProperty(this.state.property)
-          this.props.history.push('/properties');
-        }}
+          type='submit'
         >Update</Button>
         <Button
         type='submit'
         onClick={() => {
-          deleteProperty(this.state.property.id)
           this.props.history.push('/properties');
         }}
         >Delete</Button>
@@ -113,9 +105,11 @@ class Edit extends Component {
     return <div>Loading...</div>;
   };
   isLoaded = () => {
-      if(this.state.property) return true;
+      if(this.state.propertyToEdit) return true;
+      console.log(this.state, 'statey bruh');
       return false;
   };
+
   render(){
 
     return (
@@ -127,6 +121,18 @@ class Edit extends Component {
     );
     }
 }
+function mapStateToProps(state) {
+  console.log(state, 'state in maps bruh');
+  return {
+    currentProperty: state.properties.currentProperty
+  }
+};
+function mapDispatchToProps(dispatch){
+  return {
+    updateCurProperty: (propertyToEdit) => dispatch(updateCurProperty(propertyToEdit))
+  }
+};
 
+const EditConnected = connect(mapStateToProps, mapDispatchToProps)(Edit);
 
-export default withRouter(Edit);
+export default withRouter(EditConnected);
