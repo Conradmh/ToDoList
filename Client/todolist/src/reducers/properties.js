@@ -1,9 +1,14 @@
 import {
   setPropertiesSortOrder,
-  LOAD_PROPERTIES,
+  LOAD_PROPERTIES_BEGIN,
   LOAD_PROPERTIES_SUCCESS,
-  GET_CURRENTPROPERTY,
-  UPDATE_CURRENTPROPERTY,
+  CREATE_NEW_PROPERTY_BEGIN,
+  CREATE_NEW_PROPERTY_SUCCESS,
+  GET_PROPERTY,
+  EDIT_PROPERTY_BEGIN,
+  EDIT_PROPERTY_SUCCESS,
+  DELETE_PROPERTY_BEGIN,
+  DELETE_PROPERTY_SUCCESS,
 } from '../actions';
 
 export const NEWEST = 'newest';
@@ -18,6 +23,10 @@ const initialState = {
   sortKey: "name",
   properties: [],
   isLoaded: false,
+  isUpdated: false,
+  isDelete: false,
+  isCreated: false,
+  currentProperty: null,
 }
 const properties = (state = initialState, action) => {
   switch (action.type) {
@@ -30,7 +39,7 @@ const properties = (state = initialState, action) => {
           sortKey: action.payload.sortKey,
         }
       );
-    case LOAD_PROPERTIES:
+    case LOAD_PROPERTIES_BEGIN:
       return Object.assign(
         {},
         state,
@@ -50,7 +59,7 @@ const properties = (state = initialState, action) => {
 
           }
         );
-    case GET_CURRENTPROPERTY:
+    case GET_PROPERTY:
         return Object.assign(
           {},
           state,
@@ -58,12 +67,55 @@ const properties = (state = initialState, action) => {
             currentProperty: action.payload.currentProperty,
           }
         );
-    case UPDATE_CURRENTPROPERTY:
+    case CREATE_NEW_PROPERTY_BEGIN:
+        return Object.assign(
+          {},
+          state,
+          {
+            isCreated: false
+          }
+        );
+    case CREATE_NEW_PROPERTY_SUCCESS:
+        return Object.assign(
+          {},
+          state,
+          {
+            properties: state.properties.concat([action.payload.createdProperty]),
+            isUpdated: true,
+          }
+        );
+    case EDIT_PROPERTY_BEGIN:
+        return Object.assign(
+          {},
+          state,
+          {
+            isUpdated: false
+          }
+        );
+    case EDIT_PROPERTY_SUCCESS:
         return Object.assign(
           {},
           state,
           {
             currentProperty: action.payload.updatedProperty,
+            isUpdated: true,
+          }
+        );
+    case DELETE_PROPERTY_BEGIN:
+        return Object.assign(
+          {},
+          state,
+          {
+            isDeleted: false
+          }
+        );
+    case DELETE_PROPERTY_SUCCESS:
+        return Object.assign(
+          {},
+          state,
+          {
+            message: action.payload.message,
+            isDeleted: true,
           }
         );
     default:
@@ -75,7 +127,7 @@ const properties = (state = initialState, action) => {
 
 export const selectPropertyById =
 (state, id) => {
-  const foundProperty = state.properties.properties.find(property => property.id == id)
+  const foundProperty = state.propertiesReducer.properties.find(property => property.id == id)
   console.log(foundProperty, 'this is foundPropertys');
   return foundProperty
 }

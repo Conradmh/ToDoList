@@ -1,19 +1,29 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
-import { updateCurProperty } from '../../actions'
+import { setProperties, updateProperty, deleteProperty } from '../../actions'
 import { Form, Button} from 'semantic-ui-react';
 
 class Edit extends Component {
   constructor(props){
     super(props);
+    console.log(props, ' hitting props');
     this.state = {
       propertyToEdit: this.props.currentProperty
-
     }
+    if (!this.props.currentProperty) {
+      console.log('firing else');
+      this.props.setProperties()
+    }
+
+
   };
-  componentDidMount(){
-    console.log(this.state.propertyToEdit, 'state in edit bruh');
+  componentDidUpdate(prevProps){
+    if (this.props.currentProperty !== prevProps.currentProperty) {
+      this.state = {
+        propertyToEdit: this.props.currentProperty
+      };
+    }
   };
   handleNameChange = (e) => {
     e.persist();
@@ -49,7 +59,7 @@ class Edit extends Component {
   };
   handleOnSubmit = (e) => {
     e.preventDefault();
-    this.props.updateCurProperty(this.state.propertyToEdit);
+    this.props.updateProperty(this.state.propertyToEdit);
 
     this.props.history.push('/properties');
   };
@@ -90,8 +100,8 @@ class Edit extends Component {
           type='submit'
         >Update</Button>
         <Button
-        type='submit'
         onClick={() => {
+          this.props.deleteProperty(this.state.propertyToEdit);
           this.props.history.push('/properties');
         }}
         >Delete</Button>
@@ -121,15 +131,19 @@ class Edit extends Component {
     );
     }
 }
-function mapStateToProps(state) {
-  console.log(state, 'state in maps bruh');
+function mapStateToProps(state, ownProps) {
+  console.log(ownProps, 'ownProps in maps bruh');
+  console.log(state, 'state blowy uppy');
   return {
-    currentProperty: state.properties.currentProperty
+    currentProperty: state.propertiesReducer.properties.find(property => property.id == ownProps.match.params.id)
   }
 };
 function mapDispatchToProps(dispatch){
   return {
-    updateCurProperty: (propertyToEdit) => dispatch(updateCurProperty(propertyToEdit))
+    setProperties: () => dispatch(setProperties()),
+    updateProperty: (propertyToEdit) => dispatch(updateProperty(propertyToEdit)),
+    deleteProperty: (propertyToDelete) => dispatch(deleteProperty(propertyToDelete))
+
   }
 };
 

@@ -42,8 +42,8 @@ const createProperty = async (propertyFromForm) => {
 
     const parsedResponse = await createdPropertyResponse.json();
 
-    this.setState({properties: [...this.state.properties, parsedResponse]})
     console.log(parsedResponse, 'this is the New Property');
+    return parsedResponse
 
 
   } catch(err){

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import { selectPropertyById } from '../../reducers/properties.js';
-import { setCurrentProperty } from '../../actions'
+import { setProperty } from '../../actions'
 
 class Show extends Component {
   constructor(props){
@@ -44,7 +44,7 @@ class Show extends Component {
   }
   renderLoading = () => {
     if(this.isLoaded()){
-      this.props.setCurrentProperty(this.props.currentProperty);
+      this.props.setProperty(this.props.currentProperty);
       console.log(this.props.currentProperty,'fire me off');
     } else {
 
@@ -78,7 +78,7 @@ function mapStateToProps(state, ownProps) {
 };
 function mapDispatchToProps(dispatch){
   return {
-    setCurrentProperty: (currentProperty) => dispatch(setCurrentProperty(currentProperty))
+    setProperty: (currentProperty) => dispatch(setProperty(currentProperty))
   }
 };
 const ShowConnected = connect(mapStateToProps, mapDispatchToProps)(Show);

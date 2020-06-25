@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 import serviceRequests from './service-requests';
-import properties from './properties';
+import propertiesReducer from './properties';
 
 
 export default combineReducers({
-  serviceRequests, properties
+  serviceRequests, propertiesReducer
 })

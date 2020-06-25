@@ -69,10 +69,10 @@ class PropertiesList extends Component {
 function mapStateToProps(state) {
   console.log(state, 'mapStateToProps');
   return {
-    properties: state.properties.properties,
-    sortOrder: state.properties.sortOrder,
-    sortKey: state.properties.sortKey,
-    isLoaded: state.properties.isLoaded,
+    properties: state.propertiesReducer.properties,
+    sortOrder: state.propertiesReducer.sortOrder,
+    sortKey: state.propertiesReducer.sortKey,
+    isLoaded: state.propertiesReducer.isLoaded,
    }
 }
 

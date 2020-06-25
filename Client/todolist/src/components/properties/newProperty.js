@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import { createProperty } from '../../properties.services';
+import { connect } from 'react-redux';
+import { createAProperty } from '../../actions'
 import { Form, Button} from 'semantic-ui-react';
 
 class New extends Component {
@@ -51,7 +52,7 @@ class New extends Component {
             type='submit'
             onClick={(e) => {
               e.preventDefault();
-              createProperty(this.state)
+              this.props.createAProperty(this.state)
               this.props.history.push('/properties');
             }}
           >Save</Button>
@@ -60,5 +61,14 @@ class New extends Component {
 
     );
     }
-}
-export default withRouter(New);
+};
+
+function mapDispatchToProps(dispatch){
+  return {
+    createAProperty: (propertyToCreate) => dispatch(createAProperty(propertyToCreate)),
+  }
+};
+
+const NewConnected = connect(undefined, mapDispatchToProps)(New);
+
+export default withRouter(NewConnected);

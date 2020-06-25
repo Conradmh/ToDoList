@@ -1,5 +1,5 @@
 import { getActiveRequests}  from '../serviceRequests.services';
-import { getProperties, updateProperty } from '../properties.services'
+import  * as propertyService  from '../properties.services'
 export const setServiceReqSortOrder = 'setServiceReqSortOrder';
 export const setPropertiesSortOrder = 'setServiceReqSortOrder';
 
@@ -46,30 +46,51 @@ export const setSortOrder = (sortOrder, sortKey) => ({
 // Properties Thunk
 export const setProperties = (sortOrder, sortKey) => {
   return async (dispatch) => {
-    dispatch(loadProperties());
-    const properties = await getProperties(sortOrder, sortKey)
+    dispatch(loadPropertiesBegin());
+    const properties = await propertyService.getProperties(sortOrder, sortKey)
     console.log('properties', properties);
     dispatch(loadPropertiesSuccess(properties));
   }
 };
 
-export const setCurrentProperty = (currentProperty) => {
+export const setProperty = (currentProperty) => {
   return (dispatch) => {
     console.log(currentProperty, 'currentProperty to be updated');
-    dispatch(getCurrentProperty(currentProperty));
+    dispatch(getProperty(currentProperty));
   }
 };
 
-export const updateCurProperty = (updatedProperty) => {
-  return (dispatch) => {
-    console.log(updatedProperty, 'property from form/local state');
-    dispatch(updateProperty(updatedProperty.id, updatedProperty));
+export const createAProperty = (propertyToCreate) => {
+  return async (dispatch) => {
+    dispatch(createNewPropertyBegin());
+    const createdProperty = await propertyService.createProperty(propertyToCreate);
+    console.log(createdProperty, 'created property bruhh');
+    dispatch(createNewPropertySuccess(createdProperty));
   }
-}
+};
 
-export const LOAD_PROPERTIES = 'loadProperties';
-export const loadProperties = () => ({
-  type: LOAD_PROPERTIES,
+// perhaps consider loading properties again instead of passing updated proptery back or that it may auto reload with changes made to state
+export const updateProperty = (propertyToUpdate) => {
+  return async (dispatch) => {
+    dispatch(editPropertyBegin());
+    const updatedProperty = await propertyService.updateProperty(propertyToUpdate.id, propertyToUpdate);
+    console.log(updatedProperty, 'updated property bruhh');
+    dispatch(editPropertySuccess(updatedProperty));
+  }
+};
+
+export const deleteProperty = (propertyToDelete) => {
+  return async (dispatch) => {
+    dispatch(deletePropertyBegin());
+    const deletedProperty = await propertyService.deleteProperty(propertyToDelete.id);
+    console.log(deletedProperty, 'deleted property bruhh');
+    dispatch(deletePropertySuccess(deletedProperty));
+  }
+};
+
+export const LOAD_PROPERTIES_BEGIN = 'loadPropertiesBegin';
+export const loadPropertiesBegin = () => ({
+  type: LOAD_PROPERTIES_BEGIN,
 });
 
 export const LOAD_PROPERTIES_SUCCESS = 'loadPropertiesSuccess';
@@ -80,19 +101,56 @@ export const loadPropertiesSuccess = properties => ({
   },
 });
 
-export const GET_CURRENTPROPERTY = 'getCurrentProperty';
-export const getCurrentProperty = currentProperty => ({
-  type: GET_CURRENTPROPERTY,
+export const GET_PROPERTY = 'getProperty';
+export const getProperty = property => ({
+  type: GET_PROPERTY,
   payload: {
-    currentProperty,
+    property,
   },
 });
 
-export const UPDATE_CURRENTPROPERTY = 'updateCurrentProperty';
-export const updateCurrentProperty = updatedProperty => ({
-  type: UPDATE_CURRENTPROPERTY,
+
+
+export const CREATE_NEW_PROPERTY_BEGIN = 'createNewPropertyBegin';
+export const createNewPropertyBegin = () => ({
+  type: CREATE_NEW_PROPERTY_BEGIN,
+
+});
+
+export const CREATE_NEW_PROPERTY_SUCCESS = 'createNewPropertySuccess';
+export const createNewPropertySuccess = createdProperty => ({
+  type: CREATE_NEW_PROPERTY_SUCCESS,
   payload: {
-    updatedProperty,
+    createdProperty,
+  },
+});
+
+export const EDIT_PROPERTY_BEGIN = 'editPropertyBegin';
+export const editPropertyBegin = () => ({
+  type: EDIT_PROPERTY_BEGIN,
+
+});
+
+export const EDIT_PROPERTY_SUCCESS = 'editPropertySuccess';
+export const editPropertySuccess = editedProperty => ({
+  type: EDIT_PROPERTY_SUCCESS,
+  payload: {
+    editedProperty,
+  },
+});
+
+export const DELETE_PROPERTY_BEGIN = 'deletePropertyBegin';
+export const deletePropertyBegin = ()=> ({
+  type: DELETE_PROPERTY_BEGIN,
+
+});
+
+
+export const DELETE_PROPERTY_SUCCESS = 'deletePropertySuccess';
+export const deletePropertySuccess = deletedProperty => ({
+  type: DELETE_PROPERTY_SUCCESS,
+  payload: {
+    message: `Removal Successful`,
   },
 });
 
