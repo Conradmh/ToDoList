@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import { selectPropertyById } from '../../reducers/properties.js';
+import { getPropertyByPk } from '../../properties.services';
 import { setProperty } from '../../actions'
 
 class Show extends Component {
@@ -13,10 +14,17 @@ class Show extends Component {
 
     }
   }
-
-
+  componentDidMount(){
+    this.findById();
+  };
+  findById = async () => {
+    const property = await getPropertyByPk(this.props.match.params.id);
+    this.setState({
+      property: property
+    });
+  };
   goToEdit = () => {
-    this.props.history.push(`/properties/edit/${this.props.currentProperty.id}`)
+    this.props.history.push(`/properties/edit/${this.state.property.id}`)
   };
   renderProperty = () => {
     if(!this.isLoaded()) return null;
@@ -26,16 +34,16 @@ class Show extends Component {
       <>
       <Card>
         <h2>
-          {this.props.currentProperty.name}
+          {this.state.property.name}
           </h2>
           <Card.Content>
-            Street: {this.props.currentProperty.street}
+            Street: {this.state.property.street}
           </Card.Content>
           <Card.Content>
-            House Number: {this.props.currentProperty.houseNumber}
+            House Number: {this.state.property.houseNumber}
           </Card.Content>
           <Card.Content>
-            Unit Number: {this.props.currentProperty.unitNumber}
+            Unit Number: {this.state.property.unitNumber}
           </Card.Content>
       </Card>
       </>
@@ -44,15 +52,15 @@ class Show extends Component {
   }
   renderLoading = () => {
     if(this.isLoaded()){
-      this.props.setProperty(this.props.currentProperty);
-      console.log(this.props.currentProperty,'fire me off');
+      this.props.setProperty(this.state.property);
+      console.log(this.state.property,'fire me off');
     } else {
 
       return <div>Loading...</div>;
     }
   }
   isLoaded = () => {
-      if(this.props.currentProperty) return true;
+      if(this.state.property) return true;
       return false;
   }
   render(){

@@ -1,29 +1,25 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
-import { setProperties, updateProperty, deleteProperty } from '../../actions'
+import { getPropertyByPk } from '../../properties.services';
+import { setProperties, updateProperty, deleteProperty } from '../../actions';
 import { Form, Button} from 'semantic-ui-react';
 
 class Edit extends Component {
   constructor(props){
     super(props);
-    console.log(props, ' hitting props');
     this.state = {
-      propertyToEdit: this.props.currentProperty
     }
-    if (!this.props.currentProperty) {
-      console.log('firing else');
-      this.props.setProperties()
-    }
-
-
   };
-  componentDidUpdate(prevProps){
-    if (this.props.currentProperty !== prevProps.currentProperty) {
-      this.state = {
-        propertyToEdit: this.props.currentProperty
-      };
-    }
+  componentDidMount(){
+    this.findById();
+  };
+  findById = async () => {
+    const property = await getPropertyByPk(this.props.match.params.id);
+
+    this.setState({
+      propertyToEdit: property
+    });
   };
   handleNameChange = (e) => {
     e.persist();
@@ -131,22 +127,16 @@ class Edit extends Component {
     );
     }
 }
-function mapStateToProps(state, ownProps) {
-  console.log(ownProps, 'ownProps in maps bruh');
-  console.log(state, 'state blowy uppy');
-  return {
-    currentProperty: state.propertiesReducer.properties.find(property => property.id == ownProps.match.params.id)
-  }
-};
+
 function mapDispatchToProps(dispatch){
   return {
-    setProperties: () => dispatch(setProperties()),
+
     updateProperty: (propertyToEdit) => dispatch(updateProperty(propertyToEdit)),
     deleteProperty: (propertyToDelete) => dispatch(deleteProperty(propertyToDelete))
 
   }
 };
 
-const EditConnected = connect(mapStateToProps, mapDispatchToProps)(Edit);
+const EditConnected = connect(undefined, mapDispatchToProps)(Edit);
 
 export default withRouter(EditConnected);
