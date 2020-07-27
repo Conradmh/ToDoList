@@ -79,7 +79,7 @@ const createRequest = async (requestFromForm) => {
     const parsedResponse = await createdRequestResponse.json();
 
     console.log(parsedResponse, 'this is the New Service Request');
-
+    return parsedResponse
 
   } catch(err){
     console.log('error')

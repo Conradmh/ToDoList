@@ -1,7 +1,13 @@
 import {
   setServiceReqSortOrder,
   LOAD_SERVICE_REQUESTS,
-  LOAD_SERVICE_REQUESTS_SUCCESS
+  LOAD_SERVICE_REQUESTS_SUCCESS,
+  CREATE_NEW_SERVICE_REQUEST_BEGIN,
+  CREATE_NEW_SERVICE_REQUEST_SUCCESS,
+  EDIT_SERVICE_REQUEST_BEGIN,
+  EDIT_SERVICE_REQUEST_SUCCESS,
+  DELETE_SERVICE_REQUEST_BEGIN,
+  DELETE_SERVICE_REQUEST_SUCCESS,
 } from '../actions';
 
 export const NEWEST = 'newest';
@@ -16,6 +22,10 @@ const initialState = {
   sortKey: "createdAt",
   serviceRequests: [],
   isLoaded: false,
+  isUpdated: false,
+  isDelete: false,
+  isCreated: false,
+  current: null,
 }
 const serviceRequests = (state = initialState, action) => {
   switch (action.type) {
@@ -37,13 +47,63 @@ const serviceRequests = (state = initialState, action) => {
         }
       );
     case LOAD_SERVICE_REQUESTS_SUCCESS:
-        console.log(action, 'reduca yo')
         return Object.assign(
           {},
           state,
           {
             serviceRequests: action.payload.serviceRequests,
             isLoaded: true,
+          }
+        );
+    case CREATE_NEW_SERVICE_REQUEST_BEGIN:
+        return Object.assign(
+          {},
+          state,
+          {
+            isCreated: false
+          }
+        );
+    case CREATE_NEW_SERVICE_REQUEST_SUCCESS:
+        return Object.assign(
+          {},
+          state,
+          {
+            serviceRequests: state.serviceRequests.concat([action.payload.createdServiceRequest]),
+            isUpdated: true,
+          }
+        );
+    case EDIT_SERVICE_REQUEST_BEGIN:
+        return Object.assign(
+          {},
+          state,
+          {
+            isUpdated: false
+          }
+        );
+    case EDIT_SERVICE_REQUEST_SUCCESS:
+        return Object.assign(
+          {},
+          state,
+          {
+            currentServiceRequest: action.payload.updatedServiceRequest,
+            isUpdated: true,
+          }
+        );
+    case DELETE_SERVICE_REQUEST_BEGIN:
+        return Object.assign(
+          {},
+          state,
+          {
+            isDeleted: false
+          }
+        );
+    case DELETE_SERVICE_REQUEST_SUCCESS:
+        return Object.assign(
+          {},
+          state,
+          {
+            message: action.payload.message,
+            isDeleted: true,
           }
         );
     default:

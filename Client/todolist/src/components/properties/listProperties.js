@@ -26,8 +26,8 @@ class PropertiesList extends Component {
     if(!this.isLoaded()) return null;
     const properties = this.props.properties.map((units) => {
       return (
-        <li>
-        <Link key={units.id} to={`/properties/${units.id}`}>{units.name}</Link>
+        <li key={units.id}>
+        <Link  to={`/properties/${units.id}`}>{units.name}</Link>
         </li>
       )
     });

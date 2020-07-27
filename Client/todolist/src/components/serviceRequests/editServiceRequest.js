@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import { getServiceRequestByPk, updateRequest, deleteRequest } from '../../serviceRequests.services';
+import { getServiceRequestByPk } from '../../serviceRequests.services';
+import {  updateServiceRequest, deleteServiceRequest } from '../../actions';
+import { connect } from 'react-redux';
 import { Form, Button} from 'semantic-ui-react';
 
 class Edit extends Component {
@@ -13,62 +15,66 @@ class Edit extends Component {
   };
   findById = async () => {
     const serviceRequest = await getServiceRequestByPk(this.props.match.params.id);
-    this.setState({serviceRequest});
+
+    this.setState({
+      serviceRequestToEdit: serviceRequest,
+    });
   };
   updateRequest = async () => {
-    const serviceReq = this.state.serviceRequest;
+    const serviceReq = this.state.serviceRequestToEdit;
 
-    await updateRequest(serviceReq);
+    await updateServiceRequest(serviceReq);
     console.log(serviceReq, 'serviceReq');
   };
   handleTitleChange = (e) => {
     e.persist();
     this.setState(prevState => ({
-      serviceRequest: {
-        ...prevState.serviceRequest, title: e.target.value}}
+      serviceRequestToEdit: {
+        ...prevState.serviceRequestToEdit, title: e.target.value}}
     ));
     console.log(this.state)
   };
   handleDescriptionChange = (e) => {
     e.persist();
     this.setState(prevState => ({
-      serviceRequest: {
-        ...prevState.serviceRequest, description: e.target.value}}
+      serviceRequestToEdit: {
+        ...prevState.serviceRequestToEdit, description: e.target.value}}
     ));
     console.log(this.state)
+  };
+  handleOnSubmit = (e) => {
+    e.preventDefault();
+    this.props.updateServiceRequest(this.state.serviceRequestToEdit);
+
+    this.props.history.push('/');
   };
   renderEditServiceRequestForm = () => {
     if(!this.isLoaded()) return null;
 
     return (
       <>
-      <Form>
+      <Form onSubmit={this.handleOnSubmit}>
         <Form.Input
         fluid
         label='Title'
-        placeholder={this.state.serviceRequest.title}
+        placeholder={this.state.serviceRequestToEdit.title}
         onChange={this.handleTitleChange}
         />
         <Form.Input
         fluid
         label='Description'
         name="description"
-        placeholder={this.state.serviceRequest.description}
+        placeholder={this.state.serviceRequestToEdit.description}
         onChange={this.handleDescriptionChange}
         />
         <Button
-        type='submit'
-        onClick={async () => {
-          await this.updateRequest(this.state.serviceRequest)
-          this.props.history.push('/');
-        }}
+          type='submit'
         >Update</Button>
         <Button
-        type='submit'
-        onClick={async () => {
-          await  deleteRequest(this.state.serviceRequest.id)
-          this.props.history.push('/');
-        }}
+          onClick={() => {
+            this.props.deleteServiceRequest(this.state.serviceRequestToEdit);
+            this.props.history.push('/service-request');
+          }}
         >Delete</Button>
         </Form>
       </>
@@ -80,7 +86,7 @@ class Edit extends Component {
     return <div>Loading...</div>;
   };
   isLoaded = () => {
-      if(this.state.serviceRequest) return true;
+      if(this.state.serviceRequestToEdit) return true;
       return false;
   };
   render(){
@@ -94,6 +100,13 @@ class Edit extends Component {
     );
     }
 }
+function mapDispatchToProps(dispatch){
+  return {
+    updateServiceRequest: (serviceRequestToEdit) => dispatch(updateServiceRequest(serviceRequestToEdit)),
+    deleteServiceRequest: (serviceRequestIdToDelete) => dispatch(deleteServiceRequest(serviceRequestIdToDelete)),
+  }
+};
 
+const EditConnected = connect(undefined, mapDispatchToProps)(Edit);
 
-export default withRouter(Edit);
+export default withRouter(EditConnected);

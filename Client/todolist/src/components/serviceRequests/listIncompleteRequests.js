@@ -63,7 +63,7 @@ class ActiveList extends Component {
 
     const requests = this.props.serviceRequests.map((reqs) => {
       return (
-        <li>
+        <li key={reqs.id}>
         <Link to={`/service-request/${reqs.id}`}>{reqs.title}</Link> submitted {moment(`${reqs.createdAt}`).fromNow()}
         </li>
       )

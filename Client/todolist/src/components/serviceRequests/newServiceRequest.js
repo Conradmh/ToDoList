@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import { createRequest } from '../../serviceRequests.services';
+import { connect } from 'react-redux'
+import { createServiceRequest } from '../../actions';
 import { Form, Button, Dropdown} from 'semantic-ui-react';
 
 class New extends Component {
@@ -65,7 +66,7 @@ class New extends Component {
             type='submit'
             onClick={(e) => {
               e.preventDefault();
-              createRequest(this.state)
+              this.props.createServiceRequest(this.state)
               this.props.history.push('/');
             }}
           >Save</Button>
@@ -75,4 +76,13 @@ class New extends Component {
     );
     }
 }
-export default withRouter(New);
+
+function mapDispatchToProps(dispatch){
+  return {
+    createServiceRequest: (requestToCreate) => dispatch(createServiceRequest(requestToCreate)),
+  }
+};
+
+const NewConnected = connect(undefined, mapDispatchToProps)(New);
+
+export default withRouter(NewConnected);
